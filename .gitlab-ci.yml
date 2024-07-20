@@ -1,0 +1,72 @@
+variables:
+  NODE_IMAGE: ${CI_REGISTRY_IMAGE}/node-20:latest
+
+stages:
+  - install
+  - build
+  - deploy
+
+default:
+  image: ${NODE_IMAGE}
+
+.node-modules-cache:
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+    policy: pull
+  before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:npm_install[collapsed=true]\r\e[0KInstalling dependencies"
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --prefer-offline
+    - echo -e "\e[0Ksection_end:`date +%s`:npm_install\r\e[0K"
+
+install:
+  stage: install
+  extends:
+    - .node-modules-cache
+  except:
+    - tags
+    - merge_requests
+  cache:
+    policy: pull-push
+  script:
+    - echo "This is a stub message"
+
+build:app:
+  stage: build
+  extends:
+    - .node-modules-cache
+  except:
+    - tags
+    - merge_requests
+  script:
+    - pnpm build
+  artifacts:
+    paths:
+      - build
+
+build:image:
+  image: docker:20.10.16
+  stage: build
+  except:
+    - tags
+    - merge_requests
+  needs:
+    - build:app
+  services:
+    - docker:20.10.16-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/image:latest .
+    - docker push $CI_REGISTRY_IMAGE/image:latest
+
+deploy:
+  stage: deploy
+  except:
+    - tags
+    - merge_requests
+  script:
+    - curl $DEPLOY_HOOK
