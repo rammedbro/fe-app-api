@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsoa.json",
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/modules/**/controller.ts"],
+  "spec": {
+    "outputDirectory": "build",
+    "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "routesFileName": "index.ts"
+  }
+}
