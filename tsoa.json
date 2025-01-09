@@ -3,12 +3,15 @@
   "entryFile": "src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/modules/**/controller.ts"],
-  "spec": {
-    "outputDirectory": "build",
-    "specVersion": 3
-  },
+  "defaultNumberType": "integer",
   "routes": {
     "routesDir": "src/routes",
-    "routesFileName": "index.ts"
+    "routesFileName": "index.ts",
+    "bodyCoercion": false
+  },
+  "spec": {
+    "outputDirectory": "build",
+    "specVersion": 3,
+    "basePath": "/"
   }
 }

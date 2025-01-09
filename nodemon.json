@@ -4,7 +4,8 @@
   "ext": "ts",
   "ignore": [
     "node_modules",
-    "build"
+    "build",
+    "src/routes"
   ],
   "exec": "pnpm dev"
 }

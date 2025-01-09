@@ -4,3 +4,5 @@ export interface User {
   email?: string | null;
   surname?: string | null;
 }
+
+export type UserCreationParams = Omit<User, 'id'>;
