@@ -1,5 +1,5 @@
 import { getXataClient } from '@/xata';
-import type { User } from './model';
+import type { User, UserCreationParams } from './model';
 
 export class UsersService {
   xata = getXataClient();
@@ -8,7 +8,27 @@ export class UsersService {
     return this.xata.db.users.read(id);
   }
 
-  create(params: Omit<User, 'id'>): Promise<User> {
+  getPaginated(page: number, limit: number) {
+    return this.xata.db.users.getPaginated({
+      pagination: {
+        offset: page * limit,
+        size: limit,
+      },
+    });
+  }
+
+  async getTotalCount() {
+    const res = await this.xata.db.users
+      .aggregate({
+        totalCount: {
+          count: '*',
+        },
+      });
+
+    return res.aggs.totalCount;
+  }
+
+  create(params: UserCreationParams): Promise<User> {
     return this.xata.db.users.create(params);
   }
 }

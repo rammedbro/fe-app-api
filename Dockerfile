@@ -1,8 +1,7 @@
-FROM node:20.6.1-alpine
+FROM --platform=linux/amd64 node:20.6.1-alpine
 
 RUN corepack enable pnpm
-WORKDIR /app
+WORKDIR /var/www
 COPY . .
 RUN pnpm install --production
-CMD ["node", "build"]
-EXPOSE 3000
+ENTRYPOINT ["node", "./build"]
