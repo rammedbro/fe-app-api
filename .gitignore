@@ -3,8 +3,8 @@ build
 src/routes
 
 .idea
-.xata
-.xatarc
+.env.keys
+.DS_Store
 
 package-lock.json
 yarn.lock

@@ -1,8 +1,1 @@
-export interface User {
-  id: string;
-  name?: string | null;
-  email?: string | null;
-  surname?: string | null;
-}
-
-export type UserCreationParams = Omit<User, 'id'>;
+export type { User } from '@/types/models';

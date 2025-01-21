@@ -1,4 +1,9 @@
 export interface ValidationError {
   message: string;
-  details: Record<string, unknown>;
+  details: {
+    [name: string]: {
+      message: string;
+      value?: any;
+    }
+  };
 }

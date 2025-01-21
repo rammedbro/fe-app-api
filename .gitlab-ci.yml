@@ -47,6 +47,7 @@ build:app:
   artifacts:
     paths:
       - build
+      - node_modules/.prisma
 
 build:image:
   stage: build
@@ -65,11 +66,24 @@ build:image:
     - docker build -t $CI_REGISTRY_IMAGE/image:latest .
     - docker push $CI_REGISTRY_IMAGE/image:latest
 
-deploy:
+deploy:app:
   stage: deploy
   when: manual
   except:
     - tags
     - merge_requests
+  environment: production
   script:
-    - curl $DEPLOY_HOOK
+    - curl $DEPLOY_HOOK_URL
+
+deploy:db:
+  stage: deploy
+  when: manual
+  extends:
+    - .node-modules-cache
+  except:
+    - tags
+    - merge_requests
+  environment: production
+  script:
+    - npx prisma migrate deploy

@@ -1,7 +1,9 @@
 FROM --platform=linux/amd64 node:20.6.1-alpine
 
-RUN corepack enable pnpm
 WORKDIR /var/www
-COPY . .
+COPY schema.prisma package.json pnpm-lock.yaml .npmrc ./
+COPY build ./build
+COPY node_modules/.prisma ./node_modules/.prisma
+RUN corepack enable pnpm
 RUN pnpm install --production
-ENTRYPOINT ["node", "./build"]
+ENTRYPOINT ["node", "./build/index.js"]

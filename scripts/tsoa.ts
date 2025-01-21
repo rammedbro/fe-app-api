@@ -2,11 +2,11 @@
  * @issue https://github.com/lukeautry/tsoa/issues/868
  * @solution https://github.com/lukeautry/tsoa/issues/868#issuecomment-1445941911
  */
-const path = require('node:path');
-const fs = require('node:fs');
-const process = require('node:process');
-const ts = require('typescript');
-const tsoa = require('tsoa');
+import path from 'node:path';
+import fs from 'node:fs';
+import process from 'node:process';
+import ts from 'typescript';
+import * as tsoa from 'tsoa';
 
 const cwd = process.cwd();
 const tsConfigFileName = path.resolve(cwd, 'tsconfig.json');
@@ -27,7 +27,7 @@ function generateRoutes() {
   return tsoa.generateRoutes({ ...tsoaConfig, ...routesConfig }, tsConfigContent.options);
 }
 
-(async function () {
+async function main() {
   switch (process.argv[2]) {
     case'spec':
       await generateSpec();
@@ -39,6 +39,9 @@ function generateRoutes() {
       await Promise.all([generateRoutes(), generateSpec()]);
       break;
     default:
-      console.error('Invalid command. Use either "spec", "routes" or "spec-and-routes" as an argument.');
+      throw new Error('Invalid command. Available commands are "spec", "routes", "spec-and-routes".');
   }
-})();
+}
+
+main()
+  .catch(console.error);

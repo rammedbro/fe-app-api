@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typescriptInterfaces {
+  provider = "prisma-generator-typescript-interfaces"
+  output = "./src/types/models.ts"
+  omitRelations = "true"
+  optionalNullables = "true"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+  lastname  String?
+  email     String   @unique
+  phone     String?  @unique
+  address   String?
+  city      String?
+  avatar    String?
+
+  reviews       Review[]
+  orders        Order[]
+  favorites     Favorite[]
+  notifications Notification[]
+  carViews      CarView[]
+}
+
+model Car {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  brand       String
+  model       String
+  description String?
+  rating      Decimal     @default(0) @db.Decimal(6, 5)
+  type        CarType
+  capacity    Int         @default(4) @db.SmallInt
+  steering    CarSteering
+  gasoline    Int         @db.SmallInt
+  price       Decimal     @db.Money
+  discount    Int         @default(0) @db.SmallInt
+  images      String[]
+
+  reviews  Review[]
+  orders    Order[]
+  favorites Favorite[]
+  carViews  CarView[]
+}
+
+enum CarType {
+  Hatchback
+  Sedan
+  SUV
+  MUV
+  Coupe
+  Convertible
+}
+
+enum CarSteering {
+  Manual
+  Auto
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  content   String
+  rating    Int      @db.SmallInt
+  userId    Int
+  carId     Int
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+  phone     String   @unique
+  address   String
+  city      String
+  pickup    Json     @db.JsonB
+  dropoff   Json     @db.JsonB
+  payment   Json     @db.JsonB
+  price     Decimal  @db.Money
+  userId    Int
+  carId     Int
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
+}
+
+model Favorite {
+  createdAt DateTime @default(now())
+  userId    Int
+  carId     Int
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
+
+  @@unique([userId, carId])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  text      String
+  isSeen    Boolean
+  userId    Int
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model CarView {
+  createdAt DateTime
+  userId    Int
+  carId     Int
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
+
+  @@unique([userId, carId])
+}
