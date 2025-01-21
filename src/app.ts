@@ -1,5 +1,5 @@
 import express, { json, Request, Response, urlencoded } from 'express';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import swaggerUi from 'swagger-ui-express';
 import { ValidateError } from 'tsoa';
 import { RegisterRoutes } from './routes';
@@ -13,8 +13,8 @@ app.use(json());
 
 // Routes
 RegisterRoutes(app);
-app.use('/docs', swaggerUi.serve, (_: Request, res: Response) => {
-  const json = JSON.parse(fs.readFileSync('./build/swagger.json', 'utf-8'));
+app.use('/docs', swaggerUi.serve, async (_: Request, res: Response) => {
+  const json = JSON.parse(await fs.readFile('./build/swagger.json', 'utf-8'));
   res.send(swaggerUi.generateHTML(json));
 });
 app.use((_: Request, res: Response) => {

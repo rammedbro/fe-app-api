@@ -29,7 +29,7 @@ function generateRoutes() {
 
 async function main() {
   switch (process.argv[2]) {
-    case'spec':
+    case 'spec':
       await generateSpec();
       break;
     case 'routes':
@@ -43,5 +43,4 @@ async function main() {
   }
 }
 
-main()
-  .catch(console.error);
+main().catch(console.error);

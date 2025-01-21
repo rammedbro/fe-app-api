@@ -4,7 +4,15 @@ variables:
 stages:
   - install
   - build
+  - check
   - deploy
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'web'
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 default:
   image: ${NODE_IMAGE}
@@ -39,14 +47,12 @@ build:app:
   stage: build
   extends:
     - .node-modules-cache
-  except:
-    - tags
-    - merge_requests
   script:
     - pnpm build
   artifacts:
     paths:
       - build
+      - src/routes
       - node_modules/.prisma
 
 build:image:
@@ -56,9 +62,6 @@ build:image:
     - dind
   services:
     - docker:20.10.16-dind
-  except:
-    - tags
-    - merge_requests
   needs:
     - build:app
   script:
@@ -66,12 +69,33 @@ build:image:
     - docker build -t $CI_REGISTRY_IMAGE/image:latest .
     - docker push $CI_REGISTRY_IMAGE/image:latest
 
+lint:js:
+  stage: check
+  extends:
+    - .node-modules-cache
+  needs:
+    - build:app
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    NODE_OPTIONS: '--max-old-space-size=4096'
+  script:
+    - pnpm lint:js
+
+lint:types:
+  stage: check
+  extends:
+    - .node-modules-cache
+  needs:
+    - build:app
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - pnpm lint:types
+
 deploy:app:
   stage: deploy
   when: manual
-  except:
-    - tags
-    - merge_requests
   environment: production
   script:
     - curl $DEPLOY_HOOK_URL
@@ -81,9 +105,6 @@ deploy:db:
   when: manual
   extends:
     - .node-modules-cache
-  except:
-    - tags
-    - merge_requests
   environment: production
   script:
     - npx prisma migrate deploy

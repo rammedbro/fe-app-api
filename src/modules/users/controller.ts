@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Body,
-  Get,
-  Path,
-  Post,
-  Route,
-  Tags,
-  Response,
-  SuccessResponse,
-  Query,
-} from 'tsoa';
+import { Controller, Body, Get, Path, Post, Route, Tags, Response, SuccessResponse, Query } from 'tsoa';
 import { UsersService } from './service';
 import type { User } from './model';
 import type { ValidationError } from '@/types/errors';
@@ -35,12 +24,12 @@ export class UsersController extends Controller {
      * @type number
      * @format int32
      */
-    @Query() limit: number = 25,
+    @Query() limit: number = 25
   ) {
     const service = new UsersService();
     const users = await service.getPaginated(page, limit);
     const totalCount = await service.getTotalCount();
-    const hasMore = (page * limit) < totalCount;
+    const hasMore = page * limit < totalCount;
 
     this.setHeader('x-page', page);
     this.setHeader('x-prev-page', page > 0 ? page - 1 : 0);
@@ -59,9 +48,7 @@ export class UsersController extends Controller {
    */
   @Get('{id}')
   @Response(404, 'User not found')
-  async getUser(
-    @Path() id: number,
-  ) {
+  async getUser(@Path() id: number) {
     const user = await new UsersService().get(id);
 
     if (!user) {
@@ -81,9 +68,7 @@ export class UsersController extends Controller {
   @Post()
   @SuccessResponse('201', 'Created')
   @Response<ValidationError>(422, 'Validation Failed')
-  createUser(
-    @Body() requestBody: User,
-  ) {
+  createUser(@Body() requestBody: User) {
     this.setStatus(201);
     return new UsersService().create(requestBody);
   }

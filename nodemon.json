@@ -2,10 +2,6 @@
   "$schema": "https://json.schemastore.org/nodemon.json",
   "watch": ["src"],
   "ext": "ts",
-  "ignore": [
-    "node_modules",
-    "build",
-    "src/routes"
-  ],
+  "ignore": ["node_modules", "build", "src/routes"],
   "exec": "pnpm dev"
 }

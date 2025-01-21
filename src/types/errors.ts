@@ -3,7 +3,7 @@ export interface ValidationError {
   details: {
     [name: string]: {
       message: string;
-      value?: any;
-    }
+      value?: unknown;
+    };
   };
 }

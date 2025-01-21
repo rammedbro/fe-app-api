@@ -12,7 +12,7 @@ export class UsersService {
     return db.user.findMany({
       skip: (page > 1 ? page - 1 : 0) * limit,
       take: limit,
-    })
+    });
   }
 
   async getTotalCount() {
