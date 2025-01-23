@@ -3,7 +3,7 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
-  preset: 'conventional-commits',
+  preset: 'conventionalcommits',
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',

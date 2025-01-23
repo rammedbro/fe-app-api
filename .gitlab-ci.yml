@@ -58,6 +58,8 @@ build:app:
 
 build:image:
   stage: build
+  rules:
+    - if: $CI_COMMIT_TAG
   image: docker:20.10.16
   tags:
     - dind
@@ -72,12 +74,12 @@ build:image:
 
 lint:js:
   stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   extends:
     - .node-modules-cache
   needs:
     - build:app
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   variables:
     NODE_OPTIONS: '--max-old-space-size=4096'
   script:
@@ -85,41 +87,41 @@ lint:js:
 
 lint:types:
   stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   extends:
     - .node-modules-cache
   needs:
     - build:app
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - pnpm lint:types
 
 release:
   stage: release
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   when: manual
   extends:
     - .node-modules-cache
   needs:
     - build:app
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - pnpm semantic-release
 
 deploy:app:
   stage: deploy
-  environment: production
   rules:
     - if: $CI_COMMIT_TAG
+  environment: production
   script:
     - curl $DEPLOY_HOOK_URL
 
 deploy:db:
   stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
   extends:
     - .node-modules-cache
   environment: production
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
     - pnpm prisma migrate deploy
