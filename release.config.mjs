@@ -8,7 +8,7 @@ export default {
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
     '@semantic-release/changelog',
-    ['@semantic-release/gitlab', { assets: ['build/**'] }],
+    ['@semantic-release/gitlab'],
     ['semantic-release-jira-notes', { jiraHost: 'imolater.atlassian.net' }],
   ],
 };
