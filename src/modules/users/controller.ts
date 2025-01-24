@@ -1,6 +1,6 @@
 import { Controller, Body, Get, Path, Post, Route, Tags, Response, SuccessResponse, Query } from 'tsoa';
 import { UsersService } from './service';
-import type { User } from './model';
+import type { UserCreateData } from './model';
 import type { ValidationError } from '@/types/errors';
 
 @Route('users')
@@ -68,7 +68,7 @@ export class UsersController extends Controller {
   @Post()
   @SuccessResponse('201', 'Created')
   @Response<ValidationError>(422, 'Validation Failed')
-  createUser(@Body() requestBody: User) {
+  createUser(@Body() requestBody: UserCreateData) {
     this.setStatus(201);
     return new UsersService().create(requestBody);
   }

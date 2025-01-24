@@ -9,18 +9,26 @@ import ts from 'typescript';
 import * as tsoa from 'tsoa';
 
 const cwd = process.cwd();
-const tsConfigFileName = path.resolve(cwd, 'tsconfig.json');
-const tsConfigFile = ts.readConfigFile(tsConfigFileName, ts.sys.readFile);
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(cwd, 'package.json'), 'utf-8'));
+const tsConfigFile = ts.readConfigFile(path.resolve(cwd, 'tsconfig.json'), ts.sys.readFile);
 const tsConfigContent = ts.parseJsonConfigFileContent(tsConfigFile.config, ts.sys, cwd);
-const tsoaConfigFileName = path.resolve(cwd, 'tsoa.json');
 const {
   spec: specConfig,
   routes: routesConfig,
   ...tsoaConfig
-} = JSON.parse(fs.readFileSync(tsoaConfigFileName, 'utf-8'));
+} = JSON.parse(fs.readFileSync(path.resolve(cwd, 'tsoa.json'), 'utf-8'));
 
 function generateSpec() {
-  return tsoa.generateSpec({ ...tsoaConfig, ...specConfig }, tsConfigContent.options);
+  return tsoa.generateSpec(
+    {
+      ...tsoaConfig,
+      ...specConfig,
+      name: packageJson.name,
+      description: packageJson.description,
+      version: packageJson.description,
+    },
+    tsConfigContent.options
+  );
 }
 
 function generateRoutes() {

@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import type { User } from './model';
+import type { User, UserCreateData } from './model';
 
 export class UsersService {
   get(id: number): Promise<User | null> {
@@ -19,7 +19,7 @@ export class UsersService {
     return db.user.count();
   }
 
-  create(data: User): Promise<User> {
+  create(data: UserCreateData): Promise<User> {
     return db.user.create({
       data,
     });

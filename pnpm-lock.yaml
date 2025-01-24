@@ -8,6 +8,9 @@ dependencies:
   '@prisma/client':
     specifier: 6.2.1
     version: 6.2.1(prisma@6.2.1)
+  cors:
+    specifier: ^2.8.5
+    version: 2.8.5
   express:
     specifier: ^4.19.2
     version: 4.19.2
@@ -43,6 +46,9 @@ devDependencies:
   '@semantic-release/gitlab':
     specifier: ^13.2.4
     version: 13.2.4(semantic-release@22.0.12)
+  '@types/cors':
+    specifier: ^2.8.17
+    version: 2.8.17
   '@types/express':
     specifier: ^4.17.21
     version: 4.17.21
@@ -1505,6 +1511,13 @@ packages:
       '@types/node': 20.14.11
     dev: false
 
+  /@types/cors@2.8.17:
+    resolution:
+      { integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA== }
+    dependencies:
+      '@types/node': 20.14.11
+    dev: true
+
   /@types/doctrine@0.0.9:
     resolution:
       { integrity: sha512-eOIHzCUSH7SMfonMG1LsC2f8vxBFtho6NGBznK41R84YzPuvSBzrhEps33IsQiOW9+VL6NQ9DbjQJznk/S4uRA== }
@@ -2363,6 +2376,15 @@ packages:
     resolution:
       { integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ== }
     dev: true
+
+  /cors@2.8.5:
+    resolution:
+      { integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g== }
+    engines: { node: '>= 0.10' }
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
+    dev: false
 
   /cosmiconfig-typescript-loader@6.1.0(@types/node@20.14.11)(cosmiconfig@9.0.0)(typescript@5.7.3):
     resolution:
@@ -5058,6 +5080,12 @@ packages:
       - validate-npm-package-name
       - which
       - write-file-atomic
+
+  /object-assign@4.1.1:
+    resolution:
+      { integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg== }
+    engines: { node: '>=0.10.0' }
+    dev: false
 
   /object-inspect@1.13.2:
     resolution:
