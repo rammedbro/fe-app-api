@@ -6,7 +6,6 @@ import type { UserConfig } from '@commitlint/types';
 export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'scope-empty': [2, 'never'],
     'subject-case': [2, 'always', ['sentence-case']],
     'body-max-line-length': [2, 'always', 200],
   },
