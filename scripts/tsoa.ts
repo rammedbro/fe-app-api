@@ -25,7 +25,7 @@ function generateSpec() {
       ...specConfig,
       name: packageJson.name,
       description: packageJson.description,
-      version: packageJson.description,
+      version: packageJson.version,
     },
     tsConfigContent.options
   );

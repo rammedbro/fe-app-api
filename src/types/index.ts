@@ -1,2 +1,43 @@
 export * from './errors';
-export * from './models.gen';
+
+/**
+ * Represents options for pagination.
+ */
+export interface PaginationOptions {
+  /**
+   * The page number to retrieve.
+   * @default 1
+   */
+  page: number;
+  /**
+   * The number of items per page.
+   * @default 25
+   */
+  limit: number;
+}
+
+/**
+ * Represents the direction of sorting.
+ */
+export type SortDirection = 'asc' | 'desc';
+
+/**
+ * Represents options for sorting.
+ */
+export interface SortOptions {
+  /** An array of fields to sort by. */
+  sortBy?: string[];
+  /** The direction of the sort (ascending or descending). */
+  sortDir?: SortDirection;
+}
+
+/**
+ * Represents a paginated list of items.
+ * @template T The type of items in the list.
+ */
+export interface PaginatedList<T> extends PaginationOptions {
+  /** The array of items in the current page. */
+  items: T[];
+  /** The total number of items across all pages. */
+  count: number;
+}

@@ -1,43 +1,31 @@
-import { Controller, Body, Get, Path, Post, Route, Tags, Response, SuccessResponse, Query } from 'tsoa';
+import { Body, Get, Patch, Path, Post, Queries, Response, Route, SuccessResponse, Tags } from 'tsoa';
+import { AbstractController } from '@/controller';
+import type { ValidationError } from '@/types';
+import type {
+  AddFavoritePayload,
+  AddOrderPayload,
+  AddUserPayload,
+  GetFavoriteListOptions,
+  GetNotificationListOptions,
+  GetOrderListOptions,
+  GetUserListOptions,
+  UpdateNotificationOptions,
+} from './model';
 import { UsersService } from './service';
-import type { UserCreateData } from './model';
-import type { ValidationError } from '@/types/errors';
 
 @Route('users')
 @Tags('users')
-export class UsersController extends Controller {
+export class UsersController extends AbstractController {
   /**
    * Retrieves a list of users with pagination.
-   *
-   * @param page The page number for pagination. Default is 1.
-   * @param limit The number of users per page. Default is 25.
-   * @returns An array of users
    */
   @Get()
-  async getUsers(
-    /**
-     * @type number
-     * @format int32
-     */
-    @Query() page: number = 1,
-    /**
-     * @type number
-     * @format int32
-     */
-    @Query() limit: number = 25
-  ) {
-    const service = new UsersService();
-    const users = await service.getPaginated(page, limit);
-    const totalCount = await service.getTotalCount();
-    const hasMore = page * limit < totalCount;
+  async getUserList(@Queries() options: GetUserListOptions) {
+    const { items, page, limit, count } = await new UsersService().getUserList(options);
 
-    this.setHeader('x-page', page);
-    this.setHeader('x-prev-page', page > 0 ? page - 1 : 0);
-    this.setHeader('x-next-page', hasMore ? page + 1 : 0);
-    this.setHeader('x-per-page', limit);
-    this.setHeader('x-total-count', totalCount);
+    this.setPaginationHeaders(page, limit, count);
 
-    return users;
+    return items;
   }
 
   /**
@@ -49,7 +37,7 @@ export class UsersController extends Controller {
   @Get('{id}')
   @Response(404, 'User not found')
   async getUser(@Path() id: number) {
-    const user = await new UsersService().get(id);
+    const user = await new UsersService().getUser(id);
 
     if (!user) {
       this.setStatus(404);
@@ -62,14 +50,86 @@ export class UsersController extends Controller {
   /**
    * Creates a new user using the provided data.
    *
-   * @param requestBody The data required to create a new user.
    * @returns The newly created user object.
+   * @param body
    */
   @Post()
   @SuccessResponse('201', 'Created')
   @Response<ValidationError>(422, 'Validation Failed')
-  createUser(@Body() requestBody: UserCreateData) {
+  addUser(@Body() body: AddUserPayload) {
     this.setStatus(201);
-    return new UsersService().create(requestBody);
+    return new UsersService().addUser(body);
+  }
+
+  @Patch('{id}')
+  @Response(404, 'User not found')
+  async updateUser(@Path() id: number, @Body() body: AddUserPayload) {
+    try {
+      await new UsersService().updateUser(id, body);
+    } catch {
+      this.setStatus(404);
+    }
+  }
+
+  @Get('{id}/favorites')
+  async getFavoriteList(@Path() id: number, @Queries() options: GetFavoriteListOptions) {
+    const { items, page, limit, count } = await new UsersService().getFavoriteList(id, options);
+
+    this.setPaginationHeaders(page, limit, count);
+
+    return items;
+  }
+
+  @Post('{id}/favorites')
+  @SuccessResponse('201', 'Created')
+  @Response<ValidationError>(422, 'Validation Failed')
+  async addFavorite(@Path() id: number, @Body() body: AddFavoritePayload) {
+    return new UsersService().addFavorite(id, body);
+  }
+
+  @Get('{id}/notifications')
+  @Response(404, 'User not found')
+  async getNotificationList(@Path() id: number, @Queries() options: GetNotificationListOptions) {
+    try {
+      const { items, page, limit, count } = await new UsersService().getNotificationList(id, options);
+
+      this.setPaginationHeaders(page, limit, count);
+
+      return items;
+    } catch {
+      this.setStatus(404);
+    }
+  }
+
+  @Patch('{id}/notifications')
+  @Response(404, 'User not found')
+  async readNotifications(@Path() id: number, @Queries() options: UpdateNotificationOptions) {
+    try {
+      await new UsersService().updateNotification(id, { isSeen: true }, options);
+    } catch {
+      this.setStatus(404);
+    }
+  }
+
+  @Get('{id}/orders')
+  @Response(404, 'User not found')
+  async getOrderList(@Path() id: number, @Queries() options: GetOrderListOptions) {
+    try {
+      const { items, page, limit, count } = await new UsersService().getOrderList(id, options);
+
+      this.setPaginationHeaders(page, limit, count);
+
+      return items;
+    } catch {
+      this.setStatus(404);
+    }
+  }
+
+  @Post('{id}/orders')
+  @SuccessResponse('201', 'Created')
+  @Response<ValidationError>(422, 'Validation Failed')
+  async addOrder(@Path() id: number, @Body() body: AddOrderPayload) {
+    this.setStatus(201);
+    return new UsersService().addOrder(id, body);
   }
 }

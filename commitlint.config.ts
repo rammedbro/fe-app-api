@@ -8,5 +8,6 @@ export default {
   rules: {
     'scope-empty': [2, 'never'],
     'subject-case': [2, 'always', ['sentence-case']],
+    'body-max-line-length': [2, 'always', 200],
   },
 } as UserConfig;

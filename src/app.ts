@@ -13,6 +13,7 @@ app.use(
   cors({
     origin: '*',
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    exposedHeaders: ['x-page', 'x-prev-page', 'x-next-page', 'x-per-page', 'x-total-count'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
     maxAge: 24 * 60 * 60,

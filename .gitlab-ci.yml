@@ -1,5 +1,6 @@
 variables:
   NODE_IMAGE: ${CI_REGISTRY_IMAGE}/node-20:latest
+  PRISMA_SKIP_POSTINSTALL_GENERATE: 1
 
 stages:
   - install
@@ -10,6 +11,8 @@ stages:
 
 workflow:
   rules:
+    - if: $CI_COMMIT_TITLE =~ /\[skip ci\]$/
+      when: never
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == 'web'
     - if: $CI_COMMIT_TAG
@@ -111,7 +114,7 @@ release:
     GIT_COMMITTER_NAME: $GITLAB_USER_NAME
     GIT_COMMITTER_EMAIL: $GITLAB_USER_EMAIL
   script:
-    - pnpm semantic-release
+    - pnpm release
 
 deploy:app:
   stage: deploy

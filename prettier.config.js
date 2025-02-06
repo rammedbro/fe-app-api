@@ -2,7 +2,8 @@
  * @see https://prettier.io/docs/en/configuration.html
  * @type {import("prettier").Config}
  */
-export default {
+// eslint-disable-next-line no-undef
+module.exports = {
   trailingComma: 'es5',
   tabWidth: 2,
   semi: true,
