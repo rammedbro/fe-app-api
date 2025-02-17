@@ -8,6 +8,9 @@ dependencies:
   '@prisma/client':
     specifier: 6.2.1
     version: 6.2.1(prisma@6.2.1)
+  argon2:
+    specifier: ^0.41.1
+    version: 0.41.1
   cors:
     specifier: ^2.8.5
     version: 2.8.5
@@ -17,12 +20,18 @@ dependencies:
   express:
     specifier: ^4.19.2
     version: 4.19.2
+  owasp-password-strength-test:
+    specifier: ^1.3.0
+    version: 1.3.0
   swagger-ui-express:
     specifier: ^5.0.1
     version: 5.0.1(express@4.19.2)
   tsoa:
     specifier: ^6.6.0
     version: 6.6.0
+  zod:
+    specifier: ^3.24.2
+    version: 3.24.2
 
 devDependencies:
   '@commitlint/cli':
@@ -61,6 +70,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.14.11
     version: 20.14.11
+  '@types/owasp-password-strength-test':
+    specifier: ^1.3.2
+    version: 1.3.2
   '@types/swagger-ui-express':
     specifier: ^4.1.7
     version: 4.1.7
@@ -1149,6 +1161,12 @@ packages:
       '@octokit/openapi-types': 23.0.1
     dev: true
 
+  /@phc/format@1.0.0:
+    resolution:
+      { integrity: sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ== }
+    engines: { node: '>=10' }
+    dev: false
+
   /@pkgjs/parseargs@0.11.0:
     resolution:
       { integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg== }
@@ -1642,6 +1660,11 @@ packages:
       { integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA== }
     dev: true
 
+  /@types/owasp-password-strength-test@1.3.2:
+    resolution:
+      { integrity: sha512-nGNNKSpeGk6JEfNUSzQ3Ri1m1gvzqL1k9t37x9cRgC6ZMJ8OSFL1t4cpN2VH9KQz9FdjuJ7ZYN0YLsed/MQnjg== }
+    dev: true
+
   /@types/parse-path@7.0.3:
     resolution:
       { integrity: sha512-LriObC2+KYZD3FzCrgWGv/qufdUy4eXrxcLgQMfYXgPbLIecKIsVBaQgUPmxSSLcjmYbDTQbMgr6qr6l/eb7Bg== }
@@ -1937,6 +1960,17 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
     dev: true
+
+  /argon2@0.41.1:
+    resolution:
+      { integrity: sha512-dqCW8kJXke8Ik+McUcMDltrbuAWETPyU6iq+4AhxqKphWi7pChB/Zgd/Tp/o8xRLbg8ksMj46F/vph9wnxpTzQ== }
+    engines: { node: '>=16.17.0' }
+    requiresBuild: true
+    dependencies:
+      '@phc/format': 1.0.0
+      node-addon-api: 8.3.0
+      node-gyp-build: 4.8.4
+    dev: false
 
   /argparse@2.0.1:
     resolution:
@@ -4958,6 +4992,12 @@ packages:
       { integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ== }
     dev: true
 
+  /node-addon-api@8.3.0:
+    resolution:
+      { integrity: sha512-8VOpLHFrOQlAH+qA0ZzuGRlALRA6/LVh8QJldbrC4DY0hXoMP0l4Acq8TzFC018HztWiRqyCEj2aTWY2UvnJUg== }
+    engines: { node: ^18 || ^20 || >= 21 }
+    dev: false
+
   /node-emoji@2.2.0:
     resolution:
       { integrity: sha512-Z3lTE9pLaJF47NyMhd4ww1yFTAP8YhYI8SleJiHzM46Fgpm5cnNzSl9XfzFNqbaz+VlJrIj3fXQ4DeN1Rjm6cw== }
@@ -4968,6 +5008,12 @@ packages:
       emojilib: 2.4.0
       skin-tone: 2.0.0
     dev: true
+
+  /node-gyp-build@4.8.4:
+    resolution:
+      { integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ== }
+    hasBin: true
+    dev: false
 
   /nodemon@3.1.4:
     resolution:
@@ -5221,6 +5267,11 @@ packages:
       type-check: 0.4.0
       word-wrap: 1.2.5
     dev: true
+
+  /owasp-password-strength-test@1.3.0:
+    resolution:
+      { integrity: sha512-33/Z+vyjlFaVZsT7aAFe3SkQZdU6su59XNkYdU5o2Fssz0D9dt6uiFaMm62M7dFQSKogULq8UYvdKnHkeqNB2w== }
+    dev: false
 
   /own-keys@1.0.1:
     resolution:
@@ -7027,3 +7078,8 @@ packages:
       { integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g== }
     engines: { node: '>=12.20' }
     dev: true
+
+  /zod@3.24.2:
+    resolution:
+      { integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ== }
+    dev: false

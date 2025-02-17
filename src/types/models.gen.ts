@@ -9,9 +9,10 @@ export type CarSteering = 'Manual' | 'Auto';
 export interface UserDBModel {
   id: number;
   createdAt: Date;
-  name: string;
-  lastname?: string | null;
   email: string;
+  password: string;
+  name?: string | null;
+  lastname?: string | null;
   phone?: string | null;
   address?: string | null;
   city?: string | null;

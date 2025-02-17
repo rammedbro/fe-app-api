@@ -11,7 +11,9 @@ export type AddUserPayload = {
   [K in Exclude<keyof User, 'id' | 'createdAt'>]: User[K];
 };
 
-export interface UpdateUserPayload extends AddUserPayload {}
+export type UpdateUserPayload = {
+  [K in keyof AddUserPayload]?: AddUserPayload[K];
+};
 
 export interface Notification extends NotificationDBModel {}
 

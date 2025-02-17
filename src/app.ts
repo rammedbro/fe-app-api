@@ -3,8 +3,10 @@ import fs from 'node:fs/promises';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import { ValidateError } from 'tsoa';
+import { ZodError } from 'zod';
 import { RegisterRoutes } from './routes';
-import type { ValidationError } from './types';
+import { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from './types';
+import { Prisma } from '@prisma/client';
 
 const app = express();
 
@@ -41,10 +43,17 @@ app.use((_: Request, res: Response) => {
 // Error handling
 app.use((err: unknown, _: Request, res: Response, next: () => void) => {
   if (err instanceof ValidateError) {
-    return res.status(422).json({
-      message: 'Validation Failed',
-      details: err.fields,
-    } as ValidationError);
+    return res.status(400).json(new RouteValidationError(err.fields));
+  }
+
+  if (err instanceof ZodError) {
+    return res.status(422).json(new SchemaValidationError(err.flatten().fieldErrors));
+  }
+
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === 'P2002') {
+      return res.status(409).json(new UniquenessConstraintError(err.meta?.target as string[]));
+    }
   }
 
   if (err instanceof Error) {

@@ -3,12 +3,12 @@ generator client {
 }
 
 generator models {
-  provider = "prisma-generator-typescript-interfaces"
-  output = "./src/types/models.gen.ts"
-  modelSuffix = "DBModel"
-  omitRelations = "true"
+  provider          = "prisma-generator-typescript-interfaces"
+  output            = "./src/types/models.gen.ts"
+  modelSuffix       = "DBModel"
+  omitRelations     = "true"
   optionalNullables = "true"
-  prettier = "true"
+  prettier          = "true"
 }
 
 datasource db {
@@ -19,9 +19,10 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  name      String
-  lastname  String?
   email     String   @unique
+  password  String
+  name      String?
+  lastname  String?
   phone     String?  @unique
   address   String?
   city      String?
@@ -49,7 +50,7 @@ model Car {
   discount    Int         @default(0) @db.SmallInt
   images      String[]
 
-  reviews  Review[]
+  reviews   Review[]
   orders    Order[]
   favorites Favorite[]
   carViews  CarView[]

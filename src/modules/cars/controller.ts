@@ -1,6 +1,6 @@
 import { Get, Path, Route, Tags, Response, Post, SuccessResponse, Body, Queries } from 'tsoa';
 import { AbstractController } from '@/controller';
-import type { ValidationError } from '@/types';
+import type { RouteValidationError } from '@/types';
 import { CarsService } from './service';
 import type { AddReviewPayload, GetCarListOptions, GetReviewListOptions } from './model';
 
@@ -19,8 +19,7 @@ export class CarsController extends AbstractController {
   @Get('{id}')
   @Response(404, 'Car not found')
   async getCar(@Path() id: number) {
-    const service = new CarsService();
-    const car = await service.getCar(id);
+    const car = await new CarsService().getCar(id);
 
     if (!car) {
       this.setStatus(404);
@@ -45,7 +44,7 @@ export class CarsController extends AbstractController {
 
   @Post('{id}/reviews')
   @SuccessResponse('201', 'Created')
-  @Response<ValidationError>(422, 'Validation Failed')
+  @Response<RouteValidationError>(400, 'Invalid request payload')
   async addReview(@Path() id: number, @Body() body: AddReviewPayload) {
     this.setStatus(201);
     return new CarsService().addReview(id, body);

@@ -20,7 +20,9 @@ const {
 
 async function seed() {
   try {
-    // Add avatar to users
+    /**
+     * Add avatar to users
+     */
     for (const item of await prisma.user.findMany()) {
       if (!item.avatar) continue;
 
@@ -32,7 +34,9 @@ async function seed() {
       });
     }
 
-    // Add images to cars
+    /**
+     * Add images to cars
+     */
     for (const item of await prisma.car.findMany()) {
       await prisma.car.update({
         where: { id: item.id },
@@ -51,7 +55,9 @@ async function seed() {
       });
     }
 
-    // Add pickup, dropoff to orders
+    /**
+     * Add pickup, dropoff to orders
+     */
     for (const item of await prisma.order.findMany()) {
       const start = faker.date.between({
         from: '2024-01-01',
@@ -80,6 +86,16 @@ async function seed() {
         },
       });
     }
+
+    /**
+     * Set internal id counters to current records count
+     * @see https://www.prisma.io/docs/orm/prisma-client/using-raw-sql/raw-queries#considerations
+     */
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"User"', 'id'), coalesce(max(id)+1, 1), false) FROM "User";`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Car"', 'id'), coalesce(max(id)+1, 1), false) FROM "Car";`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Review"', 'id'), coalesce(max(id)+1, 1), false) FROM "Review";`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Order"', 'id'), coalesce(max(id)+1, 1), false) FROM "Order";`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Notification"', 'id'), coalesce(max(id)+1, 1), false) FROM "Notification";`;
   } finally {
     prisma.$disconnect();
   }

@@ -1,15 +1,15 @@
 import { Body, Get, Patch, Path, Post, Queries, Response, Route, SuccessResponse, Tags } from 'tsoa';
 import { AbstractController } from '@/controller';
-import type { ValidationError } from '@/types';
+import type { RouteValidationError } from '@/types';
 import type {
   AddFavoritePayload,
   AddOrderPayload,
-  AddUserPayload,
   GetFavoriteListOptions,
   GetNotificationListOptions,
   GetOrderListOptions,
   GetUserListOptions,
   UpdateNotificationOptions,
+  UpdateUserPayload,
 } from './model';
 import { UsersService } from './service';
 
@@ -47,23 +47,9 @@ export class UsersController extends AbstractController {
     return user;
   }
 
-  /**
-   * Creates a new user using the provided data.
-   *
-   * @returns The newly created user object.
-   * @param body
-   */
-  @Post()
-  @SuccessResponse('201', 'Created')
-  @Response<ValidationError>(422, 'Validation Failed')
-  addUser(@Body() body: AddUserPayload) {
-    this.setStatus(201);
-    return new UsersService().addUser(body);
-  }
-
   @Patch('{id}')
   @Response(404, 'User not found')
-  async updateUser(@Path() id: number, @Body() body: AddUserPayload) {
+  async updateUser(@Path() id: number, @Body() body: UpdateUserPayload) {
     try {
       await new UsersService().updateUser(id, body);
     } catch {
@@ -82,7 +68,7 @@ export class UsersController extends AbstractController {
 
   @Post('{id}/favorites')
   @SuccessResponse('201', 'Created')
-  @Response<ValidationError>(422, 'Validation Failed')
+  @Response<RouteValidationError>(400, 'Invalid request payload')
   async addFavorite(@Path() id: number, @Body() body: AddFavoritePayload) {
     return new UsersService().addFavorite(id, body);
   }
@@ -127,7 +113,7 @@ export class UsersController extends AbstractController {
 
   @Post('{id}/orders')
   @SuccessResponse('201', 'Created')
-  @Response<ValidationError>(422, 'Validation Failed')
+  @Response<RouteValidationError>(400, 'Invalid request payload')
   async addOrder(@Path() id: number, @Body() body: AddOrderPayload) {
     this.setStatus(201);
     return new UsersService().addOrder(id, body);

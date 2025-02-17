@@ -1,7 +1,9 @@
 import { db } from '@/db';
 import type { Car } from '@/modules/cars/model';
+import { AddUserValidationSchema } from './validation';
 import { AbstractService } from '@/service';
 import type { PaginatedList } from '@/types';
+import argon from 'argon2';
 import type {
   User,
   Notification,
@@ -37,16 +39,24 @@ export class UsersService extends AbstractService {
     return { items, page, limit, count };
   }
 
-  addUser(payload: AddUserPayload): Promise<User> {
+  async addUser(payload: AddUserPayload): Promise<User> {
+    AddUserValidationSchema.parse(payload);
     return db.user.create({
-      data: payload,
+      data: {
+        ...payload,
+        password: await argon.hash(payload.password),
+      },
     });
   }
 
   async updateUser(id: number, payload: UpdateUserPayload): Promise<void> {
+    const { password } = payload;
     await db.user.update({
       where: { id },
-      data: payload,
+      data: {
+        ...payload,
+        password: password ? await argon.hash(password) : undefined,
+      },
     });
   }
 
