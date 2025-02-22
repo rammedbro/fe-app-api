@@ -20,9 +20,21 @@ dependencies:
   express:
     specifier: ^4.19.2
     version: 4.19.2
+  express-session:
+    specifier: ^1.18.1
+    version: 1.18.1
+  http-errors:
+    specifier: ^2.0.0
+    version: 2.0.0
   owasp-password-strength-test:
     specifier: ^1.3.0
     version: 1.3.0
+  passport:
+    specifier: ^0.7.0
+    version: 0.7.0
+  passport-local:
+    specifier: ^1.0.0
+    version: 1.0.0
   swagger-ui-express:
     specifier: ^5.0.1
     version: 5.0.1(express@4.19.2)
@@ -67,12 +79,21 @@ devDependencies:
   '@types/express':
     specifier: ^4.17.21
     version: 4.17.21
+  '@types/express-session':
+    specifier: ^1.18.1
+    version: 1.18.1
   '@types/node':
     specifier: ^20.14.11
     version: 20.14.11
   '@types/owasp-password-strength-test':
     specifier: ^1.3.2
     version: 1.3.2
+  '@types/passport':
+    specifier: ^1.0.17
+    version: 1.0.17
+  '@types/passport-local':
+    specifier: ^1.0.38
+    version: 1.0.38
   '@types/swagger-ui-express':
     specifier: ^4.1.7
     version: 4.1.7
@@ -1584,6 +1605,13 @@ packages:
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
+  /@types/express-session@1.18.1:
+    resolution:
+      { integrity: sha512-S6TkD/lljxDlQ2u/4A70luD8/ZxZcrU5pQwI1rVXCiaVIywoFgbA+PIUNDjPhQpPdK0dGleLtYc/y7XWBfclBg== }
+    dependencies:
+      '@types/express': 4.17.21
+    dev: true
+
   /@types/express@4.17.21:
     resolution:
       { integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ== }
@@ -1668,6 +1696,30 @@ packages:
   /@types/parse-path@7.0.3:
     resolution:
       { integrity: sha512-LriObC2+KYZD3FzCrgWGv/qufdUy4eXrxcLgQMfYXgPbLIecKIsVBaQgUPmxSSLcjmYbDTQbMgr6qr6l/eb7Bg== }
+    dev: true
+
+  /@types/passport-local@1.0.38:
+    resolution:
+      { integrity: sha512-nsrW4A963lYE7lNTv9cr5WmiUD1ibYJvWrpE13oxApFsRt77b0RdtZvKbCdNIY4v/QZ6TRQWaDDEwV1kCTmcXg== }
+    dependencies:
+      '@types/express': 4.17.21
+      '@types/passport': 1.0.17
+      '@types/passport-strategy': 0.2.38
+    dev: true
+
+  /@types/passport-strategy@0.2.38:
+    resolution:
+      { integrity: sha512-GC6eMqqojOooq993Tmnmp7AUTbbQSgilyvpCYQjT+H6JfG/g6RGc7nXEniZlp0zyKJ0WUdOiZWLBZft9Yug1uA== }
+    dependencies:
+      '@types/express': 4.17.21
+      '@types/passport': 1.0.17
+    dev: true
+
+  /@types/passport@1.0.17:
+    resolution:
+      { integrity: sha512-aciLyx+wDwT2t2/kJGJR2AEeBz0nJU4WuRX04Wu9Dqc5lSUtwu0WERPHYsLhF9PtseiAMPBGNUOtFjxZ56prsg== }
+    dependencies:
+      '@types/express': 4.17.21
     dev: true
 
   /@types/qs@6.9.15:
@@ -2423,6 +2475,11 @@ packages:
       { integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ== }
     dev: false
 
+  /cookie-signature@1.0.7:
+    resolution:
+      { integrity: sha512-NXdYc3dLr47pBkpUCHtKSwIOQXLVn8dZEuywboCOJY/osA0wFSLlSawr3KN8qXJEyX66FcONTH8EIlVuK0yyFA== }
+    dev: false
+
   /cookie@0.6.0:
     resolution:
       { integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw== }
@@ -2432,6 +2489,12 @@ packages:
   /cookie@0.7.1:
     resolution:
       { integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w== }
+    engines: { node: '>= 0.6' }
+    dev: false
+
+  /cookie@0.7.2:
+    resolution:
+      { integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w== }
     engines: { node: '>= 0.6' }
     dev: false
 
@@ -3264,6 +3327,23 @@ packages:
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
     dev: true
+
+  /express-session@1.18.1:
+    resolution:
+      { integrity: sha512-a5mtTqEaZvBCL9A9aqkrtfz+3SMDhOVUnjafjo+s7A9Txkq+SVX2DLvSp1Zrv4uCXa3lMSK3viWnh9Gg07PBUA== }
+    engines: { node: '>= 0.8.0' }
+    dependencies:
+      cookie: 0.7.2
+      cookie-signature: 1.0.7
+      debug: 2.6.9
+      depd: 2.0.0
+      on-headers: 1.0.2
+      parseurl: 1.3.3
+      safe-buffer: 5.2.1
+      uid-safe: 2.1.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /express@4.19.2:
     resolution:
@@ -5224,6 +5304,12 @@ packages:
       ee-first: 1.1.1
     dev: false
 
+  /on-headers@1.0.2:
+    resolution:
+      { integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA== }
+    engines: { node: '>= 0.8' }
+    dev: false
+
   /once@1.4.0:
     resolution:
       { integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w== }
@@ -5451,6 +5537,30 @@ packages:
     engines: { node: '>= 0.8' }
     dev: false
 
+  /passport-local@1.0.0:
+    resolution:
+      { integrity: sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow== }
+    engines: { node: '>= 0.4.0' }
+    dependencies:
+      passport-strategy: 1.0.0
+    dev: false
+
+  /passport-strategy@1.0.0:
+    resolution:
+      { integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA== }
+    engines: { node: '>= 0.4.0' }
+    dev: false
+
+  /passport@0.7.0:
+    resolution:
+      { integrity: sha512-cPLl+qZpSc+ireUvt+IzqbED1cHHkDoVYMo30jbJIdOOjQ1MQYZBPiNvmi8UM6lJuOpTPXJGZQk0DtC4y61MYQ== }
+    engines: { node: '>= 0.4.0' }
+    dependencies:
+      passport-strategy: 1.0.0
+      pause: 0.0.1
+      utils-merge: 1.0.1
+    dev: false
+
   /path-exists@3.0.0:
     resolution:
       { integrity: sha512-bpC7GYwiDYQ4wYLe+FA8lhRjhQCMcQGuSgGGqDkg/QerRWw9CmGRT0iSOVRSZJ29NMLZgIzqaljJ63oaL4NIJQ== }
@@ -5538,6 +5648,11 @@ packages:
       { integrity: sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg== }
     engines: { node: '>=12' }
     dev: true
+
+  /pause@0.0.1:
+    resolution:
+      { integrity: sha512-KG8UEiEVkR3wGEb4m5yZkVCzigAD+cVEJck2CzYZO37ZGJfctvVptVO192MwrtPhzONn6go8ylnOdMhKqi4nfg== }
+    dev: false
 
   /picocolors@1.1.1:
     resolution:
@@ -5698,6 +5813,12 @@ packages:
       { integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA== }
     engines: { node: '>=10' }
     dev: true
+
+  /random-bytes@1.0.0:
+    resolution:
+      { integrity: sha512-iv7LhNVO047HzYR3InF6pUcUsPQiHTM1Qal51DcGSuZFBil1aBBWG5eHPNek7bvILMaYJ/8RU1e8w1AMdHmLQQ== }
+    engines: { node: '>= 0.8' }
+    dev: false
 
   /range-parser@1.2.1:
     resolution:
@@ -6794,6 +6915,14 @@ packages:
     hasBin: true
     requiresBuild: true
     optional: true
+
+  /uid-safe@2.1.5:
+    resolution:
+      { integrity: sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA== }
+    engines: { node: '>= 0.8' }
+    dependencies:
+      random-bytes: 1.0.0
+    dev: false
 
   /unbox-primitive@1.1.0:
     resolution:

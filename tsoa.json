@@ -1,17 +1,26 @@
 {
   "$schema": "https://json.schemastore.org/tsoa.json",
-  "entryFile": "src/index.ts",
+  "entryFile": "./src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["src/modules/**/controller.ts"],
+  "controllerPathGlobs": ["./src/modules/**/controller.ts"],
   "defaultNumberType": "integer",
   "routes": {
-    "routesDir": "src/routes",
+    "routesDir": "./src/routes",
     "routesFileName": "index.ts",
-    "bodyCoercion": false
+    "bodyCoercion": false,
+    "authenticationModule": "./src/modules/auth/tsoa.ts"
   },
   "spec": {
-    "outputDirectory": "build",
+    "outputDirectory": "./build",
     "specVersion": 3,
-    "basePath": "/"
+    "basePath": "/",
+    "securityDefinitions": {
+      "auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "auth",
+        "description": "A 'sid' key in Cookie header string of an authenticated user"
+      }
+    }
   }
 }

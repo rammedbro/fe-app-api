@@ -1,6 +1,6 @@
 import type { CarDBModel, CarType, CarSteering, Decimal, ReviewDBModel } from '@/types/models.gen';
 import type { PaginationOptions, SortOptions } from '@/types';
-import type { User } from '@/modules/users/model';
+import type { User } from '@/modules/user/model';
 
 export interface Car extends CarDBModel {}
 

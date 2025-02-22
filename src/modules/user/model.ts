@@ -5,14 +5,8 @@ import type { Prisma } from '.prisma/client';
 
 export interface User extends UserDBModel {}
 
-export interface GetUserListOptions extends PaginationOptions, SortOptions {}
-
 export type AddUserPayload = {
   [K in Exclude<keyof User, 'id' | 'createdAt'>]: User[K];
-};
-
-export type UpdateUserPayload = {
-  [K in keyof AddUserPayload]?: AddUserPayload[K];
 };
 
 export interface Notification extends NotificationDBModel {}

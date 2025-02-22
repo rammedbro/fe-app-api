@@ -12,12 +12,10 @@ import type {
   GetFavoriteListOptions,
   GetOrderListOptions,
   AddUserPayload,
-  UpdateUserPayload,
   AddFavoritePayload,
   GetNotificationListOptions,
   UpdateNotificationPayload,
   AddOrderPayload,
-  GetUserListOptions,
   UpdateNotificationOptions,
 } from './model';
 
@@ -28,34 +26,12 @@ export class UsersService extends AbstractService {
     });
   }
 
-  async getUserList(options: Partial<GetUserListOptions> = {}): Promise<PaginatedList<User>> {
-    const { page = 1, limit = UsersService.PAGINATION_LIMIT, sortDir = UsersService.SORT_DIRECTION } = options;
-    const items = await db.user.findMany({
-      skip: UsersService.toOffsetPagination({ page, limit }),
-      take: limit,
-    });
-    const count = await db.user.count();
-
-    return { items, page, limit, count };
-  }
-
   async addUser(payload: AddUserPayload): Promise<User> {
     AddUserValidationSchema.parse(payload);
     return db.user.create({
       data: {
         ...payload,
         password: await argon.hash(payload.password),
-      },
-    });
-  }
-
-  async updateUser(id: number, payload: UpdateUserPayload): Promise<void> {
-    const { password } = payload;
-    await db.user.update({
-      where: { id },
-      data: {
-        ...payload,
-        password: password ? await argon.hash(password) : undefined,
       },
     });
   }
