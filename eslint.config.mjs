@@ -33,6 +33,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['node_modules', 'build', 'src/routes'],
+    ignores: ['node_modules', 'build', 'src/app/providers/router/routes.ts'],
   }
 );

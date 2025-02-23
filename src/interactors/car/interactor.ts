@@ -1,11 +1,13 @@
-import { db } from '@/db';
-import { AbstractService } from '@/service';
-import type { PaginatedList } from '@/types';
-import type { AddReviewPayload, Car, GetCarListOptions, GetCarReturn, GetReviewListOptions, Review } from './model';
+import { prisma } from '@/repositories/prisma';
+import { AbstractInteractor } from '@/interactors/abstract';
+import type { PaginatedList } from '@/entities/pagination';
+import type { Car } from '@/entities/car';
+import type { Review } from '@/entities/review';
+import type { AddReviewPayload, GetCarListOptions, GetCarReturn, GetReviewListOptions } from './model';
 
-export class CarsService extends AbstractService {
+export class CarInteractor extends AbstractInteractor {
   async getCar(id: number): Promise<GetCarReturn | null> {
-    const result = await db.car.findUnique({
+    const { _count, ...car } = await prisma.car.findUniqueOrThrow({
       where: { id },
       include: {
         reviews: {
@@ -19,11 +21,6 @@ export class CarsService extends AbstractService {
       },
     });
 
-    if (result === null) {
-      return null;
-    }
-
-    const { _count, ...car } = result;
     return { ...car, views: _count.carViews };
   }
 
@@ -35,26 +32,26 @@ export class CarsService extends AbstractService {
       gasoline: { lte: options.gasoline },
       price: { lte: options.price },
     };
-    const { page = 1, limit = CarsService.PAGINATION_LIMIT, sortDir = CarsService.SORT_DIRECTION } = options;
-    const items = await db.car.findMany({
-      skip: CarsService.toOffsetPagination({ page, limit }),
+    const { page = 1, limit = CarInteractor.PAGINATION_LIMIT, sortDir = CarInteractor.SORT_DIRECTION } = options;
+    const items = await prisma.car.findMany({
+      skip: CarInteractor.toOffsetPagination({ page, limit }),
       take: limit,
       where,
       orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
     });
-    const count = await db.car.count({ where });
+    const count = await prisma.car.count({ where });
 
     return { items, page, limit, count };
   }
 
   async getReviewList(id: number, options: Partial<GetReviewListOptions> = {}): Promise<PaginatedList<Review>> {
-    const { page = 1, limit = CarsService.PAGINATION_LIMIT, sortDir = CarsService.SORT_DIRECTION } = options;
-    const { reviews, _count } = await db.car.findUniqueOrThrow({
+    const { page = 1, limit = CarInteractor.PAGINATION_LIMIT, sortDir = CarInteractor.SORT_DIRECTION } = options;
+    const { reviews, _count } = await prisma.car.findUniqueOrThrow({
       where: { id },
       select: {
         reviews: {
           include: { user: true },
-          skip: CarsService.toOffsetPagination({ page, limit }),
+          skip: CarInteractor.toOffsetPagination({ page, limit }),
           take: limit,
           orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
         },
@@ -68,7 +65,7 @@ export class CarsService extends AbstractService {
   }
 
   async addReview(id: number, payload: AddReviewPayload): Promise<Review> {
-    const { reviews } = await db.car.update({
+    const { reviews } = await prisma.car.update({
       where: { id },
       data: {
         reviews: {
@@ -90,7 +87,7 @@ export class CarsService extends AbstractService {
   }
 
   async addView(id: number, payload: number) {
-    await db.car.update({
+    await prisma.car.update({
       where: { id },
       data: {
         carViews: {

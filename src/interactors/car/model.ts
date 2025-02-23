@@ -1,16 +1,12 @@
-import type { CarDBModel, CarType, CarSteering, Decimal, ReviewDBModel } from '@/types/models.gen';
-import type { PaginationOptions, SortOptions } from '@/types';
-import type { User } from '@/modules/user/model';
-
-export interface Car extends CarDBModel {}
+import type { Car, CarType, CarSteering } from '@/entities/car';
+import type { Review } from '@/entities/review';
+import type { PaginationOptions } from '@/entities/pagination';
+import type { SortOptions } from '@/entities/sort';
+import type { Decimal } from '@/shared/models';
 
 export interface GetCarReturn extends Car {
   views: number;
   reviews: Review[];
-}
-
-export interface Review extends ReviewDBModel {
-  user: User;
 }
 
 export interface GetCarListFilter {
@@ -26,5 +22,5 @@ export interface GetCarListOptions extends PaginationOptions, GetCarListFilter, 
 export interface GetReviewListOptions extends PaginationOptions, SortOptions {}
 
 export type AddReviewPayload = {
-  [K in Exclude<keyof ReviewDBModel, 'id' | 'createdAt' | 'carId'>]: ReviewDBModel[K];
+  [K in Exclude<keyof Review, 'id' | 'createdAt' | 'carId' | 'user'>]: Review[K];
 };

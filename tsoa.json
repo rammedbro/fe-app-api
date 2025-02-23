@@ -2,13 +2,13 @@
   "$schema": "https://json.schemastore.org/tsoa.json",
   "entryFile": "./src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": ["./src/modules/**/controller.ts"],
+  "controllerPathGlobs": ["./src/controllers/**/controller.ts"],
   "defaultNumberType": "integer",
   "routes": {
-    "routesDir": "./src/routes",
-    "routesFileName": "index.ts",
+    "routesDir": "./src/app/providers/router",
+    "routesFileName": "routes.ts",
     "bodyCoercion": false,
-    "authenticationModule": "./src/modules/auth/tsoa.ts"
+    "authenticationModule": "./src/app/providers/tsoa/auth.ts"
   },
   "spec": {
     "outputDirectory": "./build",

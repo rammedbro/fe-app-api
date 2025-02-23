@@ -1,14 +1,14 @@
-import { db } from '@/db';
-import type { Car } from '@/modules/cars/model';
-import { AddUserValidationSchema } from './validation';
-import { AbstractService } from '@/service';
-import type { PaginatedList } from '@/types';
 import argon from 'argon2';
+import { prisma } from '@/repositories/prisma';
+import { AddUserValidationSchema } from './validation';
+import { AbstractInteractor } from '@/interactors/abstract';
+import type { PaginatedList } from '@/entities/pagination';
+import type { Car } from '@/entities/car';
+import type { Favorite } from '@/entities/favorite';
+import type { Notification } from '@/entities/notification';
+import type { Order } from '@/entities/order';
+import type { User } from '@/entities/user';
 import type {
-  User,
-  Notification,
-  Order,
-  Favorite,
   GetFavoriteListOptions,
   GetOrderListOptions,
   AddUserPayload,
@@ -19,16 +19,16 @@ import type {
   UpdateNotificationOptions,
 } from './model';
 
-export class UsersService extends AbstractService {
+export class UserInteractor extends AbstractInteractor {
   getUser(id: number): Promise<User | null> {
-    return db.user.findUnique({
+    return prisma.user.findUnique({
       where: { id },
     });
   }
 
   async addUser(payload: AddUserPayload): Promise<User> {
     AddUserValidationSchema.parse(payload);
-    return db.user.create({
+    return prisma.user.create({
       data: {
         ...payload,
         password: await argon.hash(payload.password),
@@ -37,16 +37,16 @@ export class UsersService extends AbstractService {
   }
 
   async getFavoriteList(id: number, options: Partial<GetFavoriteListOptions> = {}): Promise<PaginatedList<Car>> {
-    const { page = 1, limit = UsersService.PAGINATION_LIMIT, sortDir = UsersService.SORT_DIRECTION } = options;
-    const favorites = await db.favorite.findMany({
+    const { page = 1, limit = UserInteractor.PAGINATION_LIMIT, sortDir = UserInteractor.SORT_DIRECTION } = options;
+    const favorites = await prisma.favorite.findMany({
       where: { userId: id },
       select: {
         car: true,
       },
-      skip: UsersService.toOffsetPagination({ page, limit }),
+      skip: UserInteractor.toOffsetPagination({ page, limit }),
       take: limit,
     });
-    const count = await db.favorite.count({
+    const count = await prisma.favorite.count({
       where: { userId: id },
     });
 
@@ -59,7 +59,7 @@ export class UsersService extends AbstractService {
   }
 
   addFavorite(id: number, payload: AddFavoritePayload): Promise<Favorite> {
-    return db.favorite.create({
+    return prisma.favorite.create({
       data: { userId: id, ...payload },
     });
   }
@@ -68,12 +68,12 @@ export class UsersService extends AbstractService {
     id: number,
     options: Partial<GetNotificationListOptions> = {}
   ): Promise<PaginatedList<Notification>> {
-    const { page = 1, limit = UsersService.PAGINATION_LIMIT, sortDir = UsersService.SORT_DIRECTION } = options;
-    const { notifications, _count } = await db.user.findUniqueOrThrow({
+    const { page = 1, limit = UserInteractor.PAGINATION_LIMIT, sortDir = UserInteractor.SORT_DIRECTION } = options;
+    const { notifications, _count } = await prisma.user.findUniqueOrThrow({
       where: { id },
       select: {
         notifications: {
-          skip: UsersService.toOffsetPagination({ page, limit }),
+          skip: UserInteractor.toOffsetPagination({ page, limit }),
           take: limit,
         },
         _count: {
@@ -90,7 +90,7 @@ export class UsersService extends AbstractService {
     payload: UpdateNotificationPayload,
     options: Partial<UpdateNotificationOptions> = {}
   ): Promise<void> {
-    await db.notification.updateMany({
+    await prisma.notification.updateMany({
       where: {
         id: { in: options.id },
         userId: id,
@@ -100,13 +100,13 @@ export class UsersService extends AbstractService {
   }
 
   async getOrderList(id: number, options: Partial<GetOrderListOptions> = {}): Promise<PaginatedList<Order>> {
-    const { page = 1, limit = UsersService.PAGINATION_LIMIT, sortDir = UsersService.SORT_DIRECTION } = options;
-    const { orders, _count } = await db.user.findUniqueOrThrow({
+    const { page = 1, limit = UserInteractor.PAGINATION_LIMIT, sortDir = UserInteractor.SORT_DIRECTION } = options;
+    const { orders, _count } = await prisma.user.findUniqueOrThrow({
       where: { id },
       select: {
         orders: {
           include: { car: true },
-          skip: UsersService.toOffsetPagination({ page, limit }),
+          skip: UserInteractor.toOffsetPagination({ page, limit }),
           take: limit,
         },
         _count: {
@@ -121,7 +121,7 @@ export class UsersService extends AbstractService {
   }
 
   async addOrder(id: number, payload: AddOrderPayload): Promise<Order> {
-    const { orders } = await db.user.update({
+    const { orders } = await prisma.user.update({
       where: { id },
       data: {
         orders: {

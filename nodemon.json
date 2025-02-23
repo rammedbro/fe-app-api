@@ -2,6 +2,6 @@
   "$schema": "https://json.schemastore.org/nodemon.json",
   "watch": ["src", "tsoa.json", "tsconfig.json"],
   "ext": "ts",
-  "ignore": ["node_modules", "build", "src/routes"],
+  "ignore": ["node_modules", "build", "src/app/providers/router/routes.ts"],
   "exec": "pnpm dev"
 }

@@ -1,0 +1,1 @@
+export { AbstractInteractor } from './interactor';

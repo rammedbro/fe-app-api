@@ -9,5 +9,5 @@ export async function expressAuthentication(req: Express.Request, securityName: 
     return req.user;
   }
 
-  throw createHttpError(500, 'Unsupported security method');
+  throw new Error('Unsupported auth security method');
 }
