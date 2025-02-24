@@ -120,4 +120,3 @@ deploy:db:
   environment: production
   script:
     - pnpm prisma migrate deploy
-    - pnpm prisma db seed

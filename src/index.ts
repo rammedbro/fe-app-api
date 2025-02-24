@@ -36,8 +36,8 @@ const app = createApp()
       rolling: false,
       saveUninitialized: false,
       cookie: {
-        secure: process.env.ENV === 'production',
-        sameSite: process.env.ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         httpOnly: true,
         path: '/',
         maxAge: 30 * 60 * 1000,
