@@ -1,7 +1,9 @@
 import { passport } from '@/app/providers/passport';
 import { router } from '@/app/providers/router';
 import { prisma } from '@/repositories/prisma';
+import { redis } from '@/repositories/redis';
 import argon from 'argon2';
+import { RedisStore } from 'connect-redis';
 import session from 'express-session';
 import { createApp } from '@/app/ui/app';
 import process from 'node:process';
@@ -32,6 +34,7 @@ const app = createApp()
     session({
       name: 'sid',
       secret: process.env.SESSION_SECRET as string,
+      store: new RedisStore({ client: redis, prefix: 'sid:' }),
       resave: false,
       rolling: false,
       saveUninitialized: false,
