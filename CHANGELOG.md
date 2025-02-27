@@ -1,3 +1,13 @@
+# [1.4.0](https://gitlab.com/imolater/fe-app-api/compare/v1.3.0...v1.4.0) (2025-02-27)
+
+
+### Features
+
+* **[FAA-20](https://imolater.atlassian.net/browse/FAA-20):** Refactor project structure according to clean arch ([dae190b](https://gitlab.com/imolater/fe-app-api/commit/dae190bfb18187b331969464f88164be255bff54))
+* **[FAA-30](https://imolater.atlassian.net/browse/FAA-30):** Replace prisma postgres with self-hosted postgres instance ([e0ea5b1](https://gitlab.com/imolater/fe-app-api/commit/e0ea5b1e89c39481312df60cf562db1b9b419a8a))
+* **[FAA-31](https://imolater.atlassian.net/browse/FAA-31):** Add session store ([ab39548](https://gitlab.com/imolater/fe-app-api/commit/ab3954896ddfa628947de896fa556e0f8234caa4))
+* **[FAA-32](https://imolater.atlassian.net/browse/FAA-32):** Add session regeneration ([c1a6bb0](https://gitlab.com/imolater/fe-app-api/commit/c1a6bb0948c50411089d656c67e2dbd81efa2ba9))
+
 # [1.3.0](https://gitlab.com/imolater/fe-app-api/compare/v1.2.0...v1.3.0) (2025-02-22)
 
 
