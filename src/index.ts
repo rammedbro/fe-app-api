@@ -36,14 +36,14 @@ const app = createApp()
       secret: process.env.SESSION_SECRET as string,
       store: new RedisStore({ client: redis, prefix: 'sid:' }),
       resave: false,
-      rolling: false,
+      rolling: true,
       saveUninitialized: false,
       cookie: {
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         httpOnly: true,
         path: '/',
-        maxAge: 30 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
       },
     })
   )

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@prisma/adapter-pg':
-    specifier: ^6.4.1
-    version: 6.4.1(pg@8.13.3)
+    specifier: 6.2.1
+    version: 6.2.1(pg@8.13.3)
   '@prisma/client':
     specifier: 6.2.1
     version: 6.2.1(prisma@6.2.1)
@@ -1234,13 +1234,13 @@ packages:
       config-chain: 1.1.13
     dev: true
 
-  /@prisma/adapter-pg@6.4.1(pg@8.13.3):
+  /@prisma/adapter-pg@6.2.1(pg@8.13.3):
     resolution:
-      { integrity: sha512-alwRFNHawfeFfjbErMOUbLRgoxBSTCdcGpxV66oKSwsgNPQHjAqBb+xxD5Xg2Y4oyhP2ul1d5GT5vfWgTBzQPg== }
+      { integrity: sha512-GMO5BDGrK886fLmKS+BNbPi3ahPfoirAwmGLb3WAYMjTtzJxVjb2LyZjRtqALR2nycAdPcL85fvBGgVKHgnbtw== }
     peerDependencies:
       pg: ^8.11.3
     dependencies:
-      '@prisma/driver-adapter-utils': 6.4.1
+      '@prisma/driver-adapter-utils': 6.2.1
       pg: 8.13.3
       postgres-array: 3.0.2
     dev: false
@@ -1268,16 +1268,11 @@ packages:
     resolution:
       { integrity: sha512-0KItvt39CmQxWkEw6oW+RQMD6RZ43SJWgEUnzxN8VC9ixMysa7MzZCZf22LCK5DSooiLNf8vM3LHZm/I/Ni7bQ== }
 
-  /@prisma/debug@6.4.1:
+  /@prisma/driver-adapter-utils@6.2.1:
     resolution:
-      { integrity: sha512-Q9xk6yjEGIThjSD8zZegxd5tBRNHYd13GOIG0nLsanbTXATiPXCLyvlYEfvbR2ft6dlRsziQXfQGxAgv7zcMUA== }
-    dev: false
-
-  /@prisma/driver-adapter-utils@6.4.1:
-    resolution:
-      { integrity: sha512-WIVq6QUzz9HJXNa+6LmyLrW/KHOFQwmXYvpaVVECjwAUaAQXFw4g85i68GFPTYrfozwz5CntdHVVzXxInkk0fA== }
+      { integrity: sha512-Bx0z0jHekcokfckg2R0y9HO4F0LMrvTs8xgSoNpbnA5wtc83VwsaLrQFlZ7AKupAGIUpd+9X+MmNQQ0ES/7Vhw== }
     dependencies:
-      '@prisma/debug': 6.4.1
+      '@prisma/debug': 6.2.1
     dev: false
 
   /@prisma/engines-version@6.2.0-14.4123509d24aa4dede1e864b46351bf2790323b69:
