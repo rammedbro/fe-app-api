@@ -1,5 +1,6 @@
 import { passport } from '@/app/providers/passport';
 import { router } from '@/app/providers/router';
+import { debug } from '@/app/providers/debug';
 import { prisma } from '@/repositories/prisma';
 import { redis } from '@/repositories/redis';
 import argon from 'argon2';
@@ -16,7 +17,9 @@ import { RouteValidationError, SchemaValidationError, UniquenessConstraintError 
 import { Prisma } from '@prisma/client';
 import { Strategy } from 'passport-local';
 
+const isProduction = process.env.NODE_ENV === 'production';
 const app = createApp()
+  .use(debug)
   .use(urlencoded({ extended: true }))
   .use(json())
   .use(
@@ -38,9 +41,10 @@ const app = createApp()
       resave: false,
       rolling: true,
       saveUninitialized: false,
+      proxy: isProduction,
       cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         httpOnly: true,
         path: '/',
         maxAge: 60 * 60 * 1000,
