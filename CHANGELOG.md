@@ -1,3 +1,10 @@
+# [1.5.0](https://gitlab.com/imolater/fe-app-api/compare/v1.4.1...v1.5.0) (2025-02-28)
+
+
+### Features
+
+* **[FAA-36](https://imolater.atlassian.net/browse/FAA-36):** Add debugging ([0831068](https://gitlab.com/imolater/fe-app-api/commit/08310684bd66d8e1b8f15337bba9e832d18d6d1d))
+
 ## [1.4.1](https://gitlab.com/imolater/fe-app-api/compare/v1.4.0...v1.4.1) (2025-02-28)
 
 
