@@ -1,3 +1,10 @@
+## [1.4.1](https://gitlab.com/imolater/fe-app-api/compare/v1.4.0...v1.4.1) (2025-02-28)
+
+
+### Bug Fixes
+
+* **[FAA-35](https://imolater.atlassian.net/browse/FAA-35):** Fix prisma runtime error ([bb1f12e](https://gitlab.com/imolater/fe-app-api/commit/bb1f12e0d62262eea5e9a58c85fbdbc847b7a143))
+
 # [1.4.0](https://gitlab.com/imolater/fe-app-api/compare/v1.3.0...v1.4.0) (2025-02-27)
 
 
