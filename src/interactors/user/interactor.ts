@@ -1,5 +1,5 @@
 import argon from 'argon2';
-import { prisma } from '@/repositories/prisma';
+import { prisma } from '@/repositories/prisma/client';
 import { AddUserValidationSchema } from './validation';
 import { AbstractInteractor } from '@/interactors/abstract';
 import type { PaginatedList } from '@/entities/pagination';

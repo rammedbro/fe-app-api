@@ -1,4 +1,4 @@
-import { prisma } from '@/repositories/prisma';
+import { prisma } from '@/repositories/prisma/client';
 import { AbstractInteractor } from '@/interactors/abstract';
 import type { PaginatedList } from '@/entities/pagination';
 import type { Car } from '@/entities/car';

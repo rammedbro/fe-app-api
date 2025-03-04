@@ -2,7 +2,28 @@
   "private": true,
   "name": "fe-app-api",
   "version": "1.5.0",
-  "description": "Web api service written with typescript, express and openapi",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "description": "The backend of the fe-app showcase project, a car rental service, built with typescript, express and openapi",
+  "keywords": [
+    "node",
+    "typescript",
+    "express",
+    "openapi",
+    "swagger",
+    "tsoa",
+    "postgres",
+    "prisma",
+    "redis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rammedbro/fe-app-api.git"
+  },
+  "author": {
+    "name": "Ramil Sharipov",
+    "email": "rammedbro@yandex.ru",
+    "url": "https://github.com/rammedbro"
+  },
   "engines": {
     "node": ">=16"
   },
@@ -12,7 +33,7 @@
   "scripts": {
     "postinstall": "pnpm build:prisma",
     "prepare": "husky",
-    "dev": "pnpm tsoa spec-and-routes && dotenvx run -f .env.development -- tsx ./src/index.ts",
+    "dev": "pnpm tsoa spec-and-routes && dotenvx run -- tsx ./src/index.ts",
     "dev:watch": "nodemon",
     "build": "run-s clean build:prisma build:routes build:spec build:app",
     "build:app": "tsc && tsc-alias",
@@ -26,26 +47,12 @@
     "lint": "run-p lint:*",
     "lint:js": "eslint \"**/*.{js,mjs,ts}\"",
     "lint:types": "tsc --noEmit",
-    "db:gui": "dotenvx run -f .env.development -- prisma studio",
+    "db:gui": "prisma studio",
     "release": "semantic-release"
   },
   "prisma": {
     "seed": "tsx ./scripts/prisma.ts seed"
   },
-  "keywords": [
-    "typescript",
-    "express",
-    "openapi",
-    "swagger",
-    "postgres",
-    "prisma",
-    "tsoa"
-  ],
-  "repository": {
-    "url": "https://gitlab.com/imolater/fe-app-api.git"
-  },
-  "author": "https://github.com/rammedbro",
-  "license": "ISC",
   "dependencies": {
     "@prisma/adapter-pg": "6.2.1",
     "@prisma/client": "6.2.1",

@@ -6,7 +6,7 @@ generator client {
 
 generator models {
   provider          = "prisma-generator-typescript-interfaces"
-  output            = "./src/shared/models/index.ts"
+  output            = "./src/repositories/prisma/models.ts"
   modelSuffix       = "DBModel"
   omitRelations     = "true"
   optionalNullables = "true"

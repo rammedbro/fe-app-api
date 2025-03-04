@@ -1,8 +1,8 @@
 import { passport } from '@/app/providers/passport';
 import { router } from '@/app/providers/router';
 import { debug } from '@/app/providers/debug';
-import { prisma } from '@/repositories/prisma';
-import { redis } from '@/repositories/redis';
+import { prisma } from '@/repositories/prisma/client';
+import { redis } from '@/repositories/redis/client';
 import argon from 'argon2';
 import { RedisStore } from 'connect-redis';
 import session from 'express-session';

@@ -1,3 +1,3 @@
-import type { UserDBModel } from '@/shared/models';
+import type { UserDBModel } from '@/repositories/prisma/models';
 
 export interface User extends UserDBModel {}
