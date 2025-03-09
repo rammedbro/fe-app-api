@@ -2,7 +2,7 @@ import type { Car, CarType, CarSteering } from '@/entities/car';
 import type { Review } from '@/entities/review';
 import type { PaginationOptions } from '@/entities/pagination';
 import type { SortOptions } from '@/entities/sort';
-import type { Decimal } from '@/repositories/prisma/models';
+import type { Decimal } from '@/shared/models/decimal';
 
 export interface GetCarReturn extends Car {
   views: number;

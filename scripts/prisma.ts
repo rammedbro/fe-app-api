@@ -74,14 +74,14 @@ async function seed() {
               latitude: faker.location.latitude(),
               longitude: faker.location.longitude(),
             },
-            date: start,
+            date: start.toISOString(),
           },
           dropoff: {
             location: {
               latitude: faker.location.latitude(),
               longitude: faker.location.longitude(),
             },
-            date: finish,
+            date: finish.toISOString(),
           },
         },
       });

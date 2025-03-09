@@ -4,6 +4,11 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 generator models {
   provider          = "prisma-generator-typescript-interfaces"
   output            = "./src/repositories/prisma/models.ts"
@@ -92,9 +97,9 @@ model Order {
   phone     String   @unique
   address   String
   city      String
-  pickup    Json     @db.JsonB
-  dropoff   Json     @db.JsonB
-  payment   Json     @db.JsonB
+  pickup    Json     @db.JsonB /// [OrderPickup]
+  dropoff   Json     @db.JsonB /// [OrderDropoff]
+  payment   Json     @db.JsonB /// [OrderPayment]
   price     Decimal  @db.Money
   userId    Int
   carId     Int
