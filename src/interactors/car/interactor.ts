@@ -6,7 +6,7 @@ import type { Review } from '@/entities/review';
 import type { AddReviewPayload, GetCarListOptions, GetCarReturn, GetReviewListOptions } from './model';
 
 export class CarInteractor extends AbstractInteractor {
-  async getCar(id: number): Promise<GetCarReturn | null> {
+  async getCar(id: number): Promise<GetCarReturn> {
     const { _count, ...car } = await prisma.car.findUniqueOrThrow({
       where: { id },
       include: {

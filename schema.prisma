@@ -94,7 +94,7 @@ model Order {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   name      String
-  phone     String   @unique
+  phone     String
   address   String
   city      String
   pickup    Json     @db.JsonB /// [OrderPickup]

@@ -1,7 +1,7 @@
-import { Body, Get, Patch, Post, Queries, Response, Route, Security, SuccessResponse, Tags, Request } from 'tsoa';
+import { Body, Get, Patch, Post, Queries, Response, Route, Security, SuccessResponse, Tags, Request, Path } from 'tsoa';
 import { AbstractController } from '@/controllers/abstract/controller';
 import { UserInteractor } from '@/interactors/user';
-import type { RouteValidationError } from '@/entities/error';
+import type { RouteValidationError, SchemaValidationError } from '@/entities/error';
 import type {
   AddFavoritePayload,
   AddOrderPayload,
@@ -68,9 +68,15 @@ export class UserController extends AbstractController {
 
   @Post('orders')
   @SuccessResponse('201', 'Created')
+  @Response<SchemaValidationError>(422, 'Invalid schema implementation')
   async addOrder(@Request() req: Express.AuthenticatedRequest, @Body() body: AddOrderPayload) {
     this.setStatus(201);
 
     return new UserInteractor().addOrder(req.user.id, body);
+  }
+
+  @Get('orders/{id}')
+  async getOrder(@Path() id: number) {
+    return new UserInteractor().getOrder(id);
   }
 }

@@ -1,6 +1,6 @@
 import argon from 'argon2';
 import { prisma } from '@/repositories/prisma/client';
-import { AddUserValidationSchema } from './validation';
+import { AddOrderValidationSchema, AddUserValidationSchema } from './validation';
 import { AbstractInteractor } from '@/interactors/abstract';
 import type { PaginatedList } from '@/entities/pagination';
 import type { Car } from '@/entities/car';
@@ -28,6 +28,7 @@ export class UserInteractor extends AbstractInteractor {
 
   async addUser(payload: AddUserPayload): Promise<User> {
     AddUserValidationSchema.parse(payload);
+
     return prisma.user.create({
       data: {
         ...payload,
@@ -120,25 +121,21 @@ export class UserInteractor extends AbstractInteractor {
     return { items: orders, page, limit, count: _count.orders };
   }
 
-  async addOrder(id: number, payload: AddOrderPayload): Promise<Order> {
-    const { orders } = await prisma.user.update({
-      where: { id },
-      data: {
-        orders: {
-          create: payload,
-        },
-      },
-      select: {
-        orders: {
-          include: { car: true },
-          take: 1,
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
-      },
+  async addOrder(userId: number, payload: AddOrderPayload): Promise<number> {
+    AddOrderValidationSchema.parse(payload);
+
+    const order = await prisma.order.create({
+      data: { userId, ...payload },
+      select: { id: true },
     });
 
-    return orders.pop() as Order;
+    return order.id;
+  }
+
+  async getOrder(orderId: number): Promise<Order> {
+    return prisma.order.findUniqueOrThrow({
+      where: { id: orderId },
+      include: { car: true },
+    });
   }
 }
