@@ -1,3 +1,12 @@
+# [1.6.0](https://gitlab.com/imolater/fe-app-api/compare/v1.5.0...v1.6.0) (2025-03-17)
+
+
+### Features
+
+* **[FAA-21](https://imolater.atlassian.net/browse/FAA-21):** Add json field's types ([4395428](https://gitlab.com/imolater/fe-app-api/commit/439542879ccb3ee0913e19e2433790198175e45d))
+* **[FAA-37](https://imolater.atlassian.net/browse/FAA-37):** Add order creation feature ([1e1602e](https://gitlab.com/imolater/fe-app-api/commit/1e1602ecd7634580b74241492b78fca204348eee))
+* **[FAA-38](https://imolater.atlassian.net/browse/FAA-38):** Add session cookie's domain ([3ead678](https://gitlab.com/imolater/fe-app-api/commit/3ead6784ff949d3d8860e98e2a61fbb6591f9739))
+
 # [1.5.0](https://gitlab.com/imolater/fe-app-api/compare/v1.4.1...v1.5.0) (2025-02-28)
 
 
