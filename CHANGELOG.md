@@ -1,3 +1,10 @@
+## [1.6.1](https://gitlab.com/imolater/fe-app-api/compare/v1.6.0...v1.6.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* **[FAA-39](https://imolater.atlassian.net/browse/FAA-39):** Fix session cookie for cors ([7948b55](https://gitlab.com/imolater/fe-app-api/commit/7948b55addaf54c861d05a8cafeea160e33d7eea))
+
 # [1.6.0](https://gitlab.com/imolater/fe-app-api/compare/v1.5.0...v1.6.0) (2025-03-17)
 
 
