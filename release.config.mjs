@@ -3,6 +3,7 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
+  repositoryUrl: 'https://gitlab.com/imolater/fe-app-api.git',
   branches: ['master', 'next'],
   plugins: [
     '@semantic-release/commit-analyzer',

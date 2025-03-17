@@ -37,9 +37,6 @@ install:
   stage: install
   extends:
     - .node-modules-cache
-  except:
-    - tags
-    - merge_requests
   cache:
     policy: pull-push
   script:
