@@ -22,9 +22,10 @@ const app = createApp()
   .use(debug)
   .use(urlencoded({ extended: true }))
   .use(json())
+  .set('trust proxy', Number(isProduction))
   .use(
     cors({
-      origin: true,
+      origin: process.env.CORS_ORIGIN,
       methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
       exposedHeaders: ['x-page', 'x-prev-page', 'x-next-page', 'x-per-page', 'x-total-count'],
       credentials: true,
@@ -41,7 +42,7 @@ const app = createApp()
       resave: false,
       rolling: true,
       saveUninitialized: false,
-      proxy: isProduction,
+      proxy: Boolean(process.env.SESSION_PROXY),
       cookie: {
         secure: isProduction,
         sameSite: isProduction ? 'none' : 'lax',
