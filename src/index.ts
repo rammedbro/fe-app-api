@@ -46,6 +46,7 @@ const app = createApp()
         secure: isProduction,
         sameSite: isProduction ? 'none' : 'lax',
         httpOnly: true,
+        domain: process.env.EXTERNAL_HOST,
         path: '/',
         maxAge: 60 * 60 * 1000,
       },
