@@ -1,3 +1,10 @@
+# [1.7.0](https://gitlab.com/imolater/fe-app-api/compare/v1.6.1...v1.7.0) (2025-03-20)
+
+
+### Features
+
+* **[FAA-40](https://imolater.atlassian.net/browse/FAA-40):** Replicate production infrastructure ([ad3c4d1](https://gitlab.com/imolater/fe-app-api/commit/ad3c4d186dd7c32c894b82533e038143e11a1dea))
+
 ## [1.6.1](https://gitlab.com/imolater/fe-app-api/compare/v1.6.0...v1.6.1) (2025-03-17)
 
 
