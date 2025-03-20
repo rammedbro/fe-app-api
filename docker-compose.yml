@@ -1,6 +1,55 @@
 services:
+  api:
+    build: .
+    image: fe-app-api
+    container_name: fe-app-api
+    env_file:
+      - '.env'
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 4000
+      FRONTEND_URL: https://morent.local
+      FRONTEND_HOST: morent.local
+      DATABASE_URL: postgresql://admin:admin@db:5432/fe_app_db
+      REDIS_URL: redis://redis:6379
+    expose:
+      - '4000'
+    depends_on:
+      - db
+      - redis
+  web:
+    image: fe-app-web # Must be built locally
+    container_name: fe-app-web
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      API_URL: /api
+      API_PROXY: http://api:4000
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: .morent.local
+    expose:
+      - '3000'
+    depends_on:
+      - api
+  nginx:
+    image: nginx:alpine
+    container_name: fe-app-nginx
+    environment:
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: .template.conf
+      FRONTEND_HOST: morent.local # Must point to localhost in 'hosts' file
+      FRONTEND_URL: http://web:3000
+      API_HOST: api.morent.local # Must point to localhost in 'hosts' file
+      API_URL: http://api:4000
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./infra/nginx/templates:/etc/nginx/templates
+      - ./infra/nginx/certs:/etc/nginx/certs
   db:
     image: postgres:16-alpine
+    container_name: fe-app-db
     restart: always
     shm_size: 128mb
     environment:
@@ -11,6 +60,7 @@ services:
       - '5432:5432'
   redis:
     image: redis:7-alpine
+    container_name: fe-app-redis
     restart: always
     ports:
       - '6379:6379'

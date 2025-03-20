@@ -1,5 +1,5 @@
 variables:
-  NODE_IMAGE: ${CI_REGISTRY_IMAGE}/node-20:latest
+  NODE_IMAGE: $CI_REGISTRY_IMAGE/node-20:latest
   PRISMA_SKIP_POSTINSTALL_GENERATE: 1
 
 stages:
@@ -17,7 +17,7 @@ workflow:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 default:
-  image: ${NODE_IMAGE}
+  image: $NODE_IMAGE
 
 .node-modules-cache:
   cache:

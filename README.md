@@ -119,11 +119,11 @@ The backend is containerized and deployed via **Render**.
    ```
 2. **Up infrastructure:**
    ```sh
-   docker compose up
+   docker compose up db redis
    ```
 3. **Run database migrations:**
    ```sh
-   dotenvx run -- prisma migrate dev --skip-generate
+   prisma migrate dev --skip-generate
    ```
 4. **Start the server:**
    ```sh

@@ -1,6 +1,7 @@
 node_modules
 build
 src/app/providers/router/routes.ts
+infra/nginx/certs
 
 .idea
 .env.keys
