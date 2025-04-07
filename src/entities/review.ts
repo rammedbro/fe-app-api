@@ -1,6 +1,6 @@
-import type { ReviewDBModel } from '@/repositories/prisma/models';
 import type { User } from '@/entities/user';
+import type { ReviewDBModel } from '@/repositories/prisma/models';
 
 export interface Review extends ReviewDBModel {
-  user: User;
+  user: Pick<User, 'name' | 'lastname' | 'avatar'>;
 }

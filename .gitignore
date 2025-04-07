@@ -4,6 +4,7 @@ src/app/providers/router/routes.ts
 infra/nginx/certs
 
 .idea
+.vscode
 .env.keys
 .DS_Store
 

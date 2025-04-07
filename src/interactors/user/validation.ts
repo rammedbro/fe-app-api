@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import owasp from 'owasp-password-strength-test';
+import { z } from 'zod';
 
 export const AddUserValidationSchema = z.object({
   email: z.string().email(),

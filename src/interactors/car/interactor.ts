@@ -1,8 +1,8 @@
-import { prisma } from '@/repositories/prisma/client';
-import { AbstractInteractor } from '@/interactors/abstract';
-import type { PaginatedList } from '@/entities/pagination';
 import type { Car } from '@/entities/car';
+import type { PaginatedList } from '@/entities/pagination';
 import type { Review } from '@/entities/review';
+import { AbstractInteractor } from '@/interactors/abstract';
+import { prisma } from '@/repositories/prisma/client';
 import type { AddReviewPayload, GetCarListOptions, GetCarReturn, GetReviewListOptions } from './model';
 
 export class CarInteractor extends AbstractInteractor {
@@ -50,7 +50,7 @@ export class CarInteractor extends AbstractInteractor {
       where: { id },
       select: {
         reviews: {
-          include: { user: true },
+          include: { user: { select: { name: true, lastname: true, avatar: true } } },
           skip: CarInteractor.toOffsetPagination({ page, limit }),
           take: limit,
           orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
@@ -64,26 +64,13 @@ export class CarInteractor extends AbstractInteractor {
     return { items: reviews, page, limit, count: _count.reviews };
   }
 
-  async addReview(id: number, payload: AddReviewPayload): Promise<Review> {
-    const { reviews } = await prisma.car.update({
-      where: { id },
-      data: {
-        reviews: {
-          create: payload,
-        },
-      },
-      select: {
-        reviews: {
-          include: { user: true },
-          take: 1,
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
-      },
+  async addReview(id: number, payload: AddReviewPayload): Promise<number> {
+    const review = await prisma.review.create({
+      data: { carId: id, ...payload },
+      include: { user: { select: { name: true, lastname: true, avatar: true } } },
     });
 
-    return reviews.pop()!;
+    return review.id;
   }
 
   async addView(id: number, payload: number) {

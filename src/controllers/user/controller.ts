@@ -1,15 +1,28 @@
-import { Body, Get, Patch, Post, Queries, Response, Route, Security, SuccessResponse, Tags, Request, Path } from 'tsoa';
 import { AbstractController } from '@/controllers/abstract/controller';
-import { UserInteractor } from '@/interactors/user';
 import type { RouteValidationError, SchemaValidationError } from '@/entities/error';
 import type {
   AddFavoritePayload,
   AddOrderPayload,
+  DelFavoritePayload,
   GetFavoriteListOptions,
   GetNotificationListOptions,
   GetOrderListOptions,
-  UpdateNotificationOptions,
 } from '@/interactors/user';
+import { UserInteractor } from '@/interactors/user';
+import {
+  Body,
+  Delete,
+  Get,
+  Path,
+  Post,
+  Queries,
+  Request,
+  Response,
+  Route,
+  Security,
+  SuccessResponse,
+  Tags,
+} from 'tsoa';
 
 @Route('user')
 @Tags('user')
@@ -40,6 +53,14 @@ export class UserController extends AbstractController {
     return new UserInteractor().addFavorite(req.user.id, body);
   }
 
+  @Delete('favorites')
+  @SuccessResponse('204', 'Deleted')
+  async delFavorite(@Request() req: Express.AuthenticatedRequest, @Body() body: DelFavoritePayload) {
+    this.setStatus(204);
+
+    return new UserInteractor().delFavorite(req.user.id, body);
+  }
+
   @Get('notifications')
   async getNotificationList(
     @Request() req: Express.AuthenticatedRequest,
@@ -50,11 +71,6 @@ export class UserController extends AbstractController {
     this.setPaginationHeaders(page, limit, count);
 
     return items;
-  }
-
-  @Patch('notifications')
-  async readNotifications(@Request() req: Express.AuthenticatedRequest, @Queries() options: UpdateNotificationOptions) {
-    await new UserInteractor().updateNotification(req.user.id, { isSeen: true }, options);
   }
 
   @Get('orders')

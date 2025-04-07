@@ -6,24 +6,25 @@ import type { SortOptions } from '@/entities/sort';
 import type { User } from '@/entities/user';
 
 export type AddUserPayload = {
-  [K in Exclude<keyof User, 'id' | 'createdAt'>]: User[K];
+  [K in Exclude<keyof User, 'id' | 'createdAt' | 'favorites'>]: User[K];
 };
+
+export interface GetUserReturn extends User {
+  favorites: Favorite[];
+  notifications: Notification[];
+}
 
 export interface GetNotificationListOptions extends PaginationOptions, SortOptions {}
 
-export type UpdateNotificationPayload = {
-  [K in Extract<keyof Notification, 'isSeen'>]: Notification[K];
-};
-
-export interface UpdateNotificationOptions {
-  id: number[];
-}
-
 export interface GetFavoriteListOptions extends PaginationOptions, SortOptions {}
 
-export type AddFavoritePayload = {
-  [K in Extract<keyof Favorite, 'carId'>]: Favorite[K];
-};
+export interface AddFavoritePayload {
+  carId: number;
+}
+
+export interface DelFavoritePayload {
+  carId: number;
+}
 
 export interface GetOrderListOptions extends PaginationOptions, SortOptions {}
 

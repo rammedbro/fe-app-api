@@ -1,12 +1,12 @@
-import createHttpError from 'http-errors';
-import passport from 'passport';
-import { Body, Get, Post, Request, Response, Route, Tags, Middlewares, Security } from 'tsoa';
-import { promisify } from 'node:util';
 import { AbstractController } from '@/controllers/abstract/controller';
-import { UserInteractor } from '@/interactors/user';
-import type { Session } from '@/entities/session';
 import type { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
-import type { SignUpPayload, SignInPayload } from './model';
+import type { Session } from '@/entities/session';
+import { UserInteractor } from '@/interactors/user';
+import createHttpError from 'http-errors';
+import { promisify } from 'node:util';
+import passport from 'passport';
+import { Body, Get, Middlewares, Post, Request, Response, Route, Security, Tags } from 'tsoa';
+import type { SignInPayload, SignUpPayload } from './model';
 
 @Route('auth')
 @Tags('auth')

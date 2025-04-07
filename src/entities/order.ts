@@ -1,6 +1,6 @@
 import type { Car } from '@/entities/car';
 import type { LocationPoint } from '@/entities/location';
-import type { CreditCardPayment, PaypalPayment, BitcoinPayment } from '@/entities/payment';
+import type { BitcoinPayment, CreditCardPayment, PaypalPayment } from '@/entities/payment';
 import type { OrderDBModel } from '@/repositories/prisma/models';
 import type { JSONCompatible } from '@/shared/models/json';
 

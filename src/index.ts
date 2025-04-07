@@ -1,21 +1,21 @@
+import { debug } from '@/app/providers/debug';
 import { passport } from '@/app/providers/passport';
 import { router } from '@/app/providers/router';
-import { debug } from '@/app/providers/debug';
+import { createApp } from '@/app/ui/app';
+import { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
 import { prisma } from '@/repositories/prisma/client';
 import { redis } from '@/repositories/redis/client';
+import { Prisma } from '@prisma/client';
 import argon from 'argon2';
 import { RedisStore } from 'connect-redis';
-import session from 'express-session';
-import { createApp } from '@/app/ui/app';
-import process from 'node:process';
-import { json, Request, Response, urlencoded } from 'express';
-import createHttpError, { HttpError } from 'http-errors';
 import cors from 'cors';
+import { json, Request, Response, urlencoded } from 'express';
+import session from 'express-session';
+import createHttpError, { HttpError } from 'http-errors';
+import process from 'node:process';
+import { Strategy } from 'passport-local';
 import { ValidateError } from 'tsoa';
 import { ZodError } from 'zod';
-import { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
-import { Prisma } from '@prisma/client';
-import { Strategy } from 'passport-local';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const app = createApp()

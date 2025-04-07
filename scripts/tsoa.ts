@@ -2,11 +2,11 @@
  * @issue https://github.com/lukeautry/tsoa/issues/868
  * @solution https://github.com/lukeautry/tsoa/issues/868#issuecomment-1445941911
  */
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
 import process from 'node:process';
-import ts from 'typescript';
 import * as tsoa from 'tsoa';
+import ts from 'typescript';
 
 const cwd = process.cwd();
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(cwd, 'package.json'), 'utf-8'));

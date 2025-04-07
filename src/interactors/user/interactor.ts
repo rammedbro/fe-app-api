@@ -1,40 +1,43 @@
-import argon from 'argon2';
-import { prisma } from '@/repositories/prisma/client';
-import { AddOrderValidationSchema, AddUserValidationSchema } from './validation';
-import { AbstractInteractor } from '@/interactors/abstract';
-import type { PaginatedList } from '@/entities/pagination';
 import type { Car } from '@/entities/car';
 import type { Favorite } from '@/entities/favorite';
 import type { Notification } from '@/entities/notification';
 import type { Order } from '@/entities/order';
-import type { User } from '@/entities/user';
+import type { PaginatedList } from '@/entities/pagination';
+import { AbstractInteractor } from '@/interactors/abstract';
+import { prisma } from '@/repositories/prisma/client';
+import argon from 'argon2';
 import type {
-  GetFavoriteListOptions,
-  GetOrderListOptions,
-  AddUserPayload,
   AddFavoritePayload,
-  GetNotificationListOptions,
-  UpdateNotificationPayload,
   AddOrderPayload,
-  UpdateNotificationOptions,
+  AddUserPayload,
+  DelFavoritePayload,
+  GetFavoriteListOptions,
+  GetNotificationListOptions,
+  GetOrderListOptions,
+  GetUserReturn,
 } from './model';
+import { AddOrderValidationSchema, AddUserValidationSchema } from './validation';
 
 export class UserInteractor extends AbstractInteractor {
-  getUser(id: number): Promise<User | null> {
-    return prisma.user.findUnique({
+  getUser(id: number): Promise<GetUserReturn> {
+    return prisma.user.findUniqueOrThrow({
       where: { id },
+      include: { favorites: true, notifications: true },
     });
   }
 
-  async addUser(payload: AddUserPayload): Promise<User> {
+  async addUser(payload: AddUserPayload): Promise<number> {
     AddUserValidationSchema.parse(payload);
 
-    return prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         ...payload,
         password: await argon.hash(payload.password),
       },
+      select: { id: true },
     });
+
+    return user.id;
   }
 
   async getFavoriteList(id: number, options: Partial<GetFavoriteListOptions> = {}): Promise<PaginatedList<Car>> {
@@ -61,7 +64,13 @@ export class UserInteractor extends AbstractInteractor {
 
   addFavorite(id: number, payload: AddFavoritePayload): Promise<Favorite> {
     return prisma.favorite.create({
-      data: { userId: id, ...payload },
+      data: { userId: id, carId: payload.carId },
+    });
+  }
+
+  async delFavorite(id: number, payload: DelFavoritePayload): Promise<void> {
+    await prisma.favorite.delete({
+      where: { id: { userId: id, carId: payload.carId } },
     });
   }
 
@@ -84,20 +93,6 @@ export class UserInteractor extends AbstractInteractor {
     });
 
     return { items: notifications, page, limit, count: _count.notifications };
-  }
-
-  async updateNotification(
-    id: number,
-    payload: UpdateNotificationPayload,
-    options: Partial<UpdateNotificationOptions> = {}
-  ): Promise<void> {
-    await prisma.notification.updateMany({
-      where: {
-        id: { in: options.id },
-        userId: id,
-      },
-      data: payload,
-    });
   }
 
   async getOrderList(id: number, options: Partial<GetOrderListOptions> = {}): Promise<PaginatedList<Order>> {

@@ -9,4 +9,5 @@ module.exports = {
   semi: true,
   singleQuote: true,
   printWidth: 120,
+  plugins: ['prettier-plugin-organize-imports'],
 };

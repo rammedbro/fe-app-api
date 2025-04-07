@@ -1,8 +1,8 @@
-import { Get, Path, Route, Tags, Response, Post, SuccessResponse, Body, Queries } from 'tsoa';
 import { AbstractController } from '@/controllers/abstract/controller';
-import { CarInteractor } from '@/interactors/car';
 import type { RouteValidationError } from '@/entities/error';
 import type { AddReviewPayload, GetReviewListOptions } from '@/interactors/car';
+import { CarInteractor } from '@/interactors/car';
+import { Body, Get, Path, Post, Queries, Response, Route, SuccessResponse, Tags } from 'tsoa';
 
 @Route('cars/{id}')
 @Tags('cars')

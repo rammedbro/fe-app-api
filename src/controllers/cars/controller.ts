@@ -1,6 +1,6 @@
-import { Get, Route, Tags, Queries, Response } from 'tsoa';
 import { AbstractController } from '@/controllers/abstract/controller';
 import { CarInteractor, type GetCarListOptions } from '@/interactors/car';
+import { Get, Queries, Response, Route, Tags } from 'tsoa';
 
 @Route('cars')
 @Tags('cars')

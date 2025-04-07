@@ -1,5 +1,5 @@
-import type { CarDBModel, CarType, CarSteering } from '@/repositories/prisma/models';
+import type { CarDBModel, CarSteering, CarType } from '@/repositories/prisma/models';
 
 export interface Car extends CarDBModel {}
 
-export type { CarType, CarSteering };
+export type { CarSteering, CarType };
