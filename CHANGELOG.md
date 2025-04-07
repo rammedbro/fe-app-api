@@ -1,3 +1,11 @@
+# [1.8.0](https://gitlab.com/imolater/fe-app-api/compare/v1.7.0...v1.8.0) (2025-04-07)
+
+
+### Features
+
+* **[FAA-44](https://imolater.atlassian.net/browse/FAA-44):** Replace fake images provider ([aceb5e6](https://gitlab.com/imolater/fe-app-api/commit/aceb5e6ebb87d77cf94c432ba337b2e7dd55ce7b))
+* **[FAA-45](https://imolater.atlassian.net/browse/FAA-45):** Add favorites feature ([3d1dfd0](https://gitlab.com/imolater/fe-app-api/commit/3d1dfd011de5fd176d85147d7dda157c85aa50c1))
+
 # [1.7.0](https://gitlab.com/imolater/fe-app-api/compare/v1.6.1...v1.7.0) (2025-03-20)
 
 ### Features
