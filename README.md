@@ -123,7 +123,7 @@ The backend is containerized and deployed via **Render**.
    ```
 3. **Run database migrations:**
    ```sh
-   prisma migrate dev --skip-generate
+   prisma migrate reset --skip-generate
    ```
 4. **Start the server:**
    ```sh
