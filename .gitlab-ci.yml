@@ -70,7 +70,7 @@ build:image:
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - >
-      if [[ -n $CI_COMMIT_TAG ]]; then
+      if [[ -n "$CI_COMMIT_TAG" ]]; then
         docker build -t $APP_IMAGE:${CI_COMMIT_TAG:1} -t $APP_IMAGE:latest .
       else
         docker build -t $APP_IMAGE:preview .
