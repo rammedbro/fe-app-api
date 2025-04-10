@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20.6.1-alpine
+FROM node:20.6.1-alpine
 
 WORKDIR /var/www
 COPY schema.prisma package.json pnpm-lock.yaml .npmrc ./
