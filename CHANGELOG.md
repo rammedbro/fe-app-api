@@ -1,3 +1,10 @@
+# [1.9.0](https://gitlab.com/imolater/fe-app-api/compare/v1.8.0...v1.9.0) (2025-04-30)
+
+
+### Features
+
+* **[FAA-46](https://imolater.atlassian.net/browse/FAA-46):** Add order's methods ([0d8e296](https://gitlab.com/imolater/fe-app-api/commit/0d8e296b27da25c1f832bd0c091e3d0401551a50))
+
 # [1.8.0](https://gitlab.com/imolater/fe-app-api/compare/v1.7.0...v1.8.0) (2025-04-07)
 
 

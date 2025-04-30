@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "fe-app-api",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "license": "SEE LICENSE IN LICENSE.txt",
   "description": "The backend of the fe-app showcase project, a car rental service, built with typescript, express and openapi",
   "keywords": [
