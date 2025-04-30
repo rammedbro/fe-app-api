@@ -1,22 +1,26 @@
-import type { Car } from '@/entities/car';
+import type { Car, CarType } from '@/entities/car';
 import type { Favorite } from '@/entities/favorite';
 import type { Notification } from '@/entities/notification';
 import type { Order } from '@/entities/order';
 import type { PaginatedList } from '@/entities/pagination';
+import { Review } from '@/entities/review';
 import { AbstractInteractor } from '@/interactors/abstract';
 import { prisma } from '@/repositories/prisma/client';
 import argon from 'argon2';
 import type {
   AddFavoritePayload,
   AddOrderPayload,
+  AddReviewPayload,
   AddUserPayload,
   DelFavoritePayload,
   GetFavoriteListOptions,
   GetNotificationListOptions,
+  GetOrderAggregationOptions,
   GetOrderListOptions,
+  GetReviewListOptions,
   GetUserReturn,
 } from './model';
-import { AddOrderValidationSchema, AddUserValidationSchema } from './validation';
+import { AddOrderValidationSchema, AddReviewValidationSchema, AddUserValidationSchema } from './validation';
 
 export class UserInteractor extends AbstractInteractor {
   getUser(id: number): Promise<GetUserReturn> {
@@ -47,7 +51,7 @@ export class UserInteractor extends AbstractInteractor {
       select: {
         car: true,
       },
-      skip: UserInteractor.toOffsetPagination({ page, limit }),
+      skip: UserInteractor.toOffsetPagination(page, limit),
       take: limit,
     });
     const count = await prisma.favorite.count({
@@ -83,7 +87,7 @@ export class UserInteractor extends AbstractInteractor {
       where: { id },
       select: {
         notifications: {
-          skip: UserInteractor.toOffsetPagination({ page, limit }),
+          skip: UserInteractor.toOffsetPagination(page, limit),
           take: limit,
         },
         _count: {
@@ -102,7 +106,7 @@ export class UserInteractor extends AbstractInteractor {
       select: {
         orders: {
           include: { car: true },
-          skip: UserInteractor.toOffsetPagination({ page, limit }),
+          skip: UserInteractor.toOffsetPagination(page, limit),
           take: limit,
         },
         _count: {
@@ -132,5 +136,79 @@ export class UserInteractor extends AbstractInteractor {
       where: { id: orderId },
       include: { car: true },
     });
+  }
+
+  async getCurrentOrder(userId: number): Promise<Order> {
+    return prisma.order.findFirstOrThrow({
+      where: {
+        userId,
+        dropoff: {
+          path: ['date'],
+          gt: new Date().toISOString(),
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: { car: true },
+    });
+  }
+
+  async getOrderAggregation(userId: number, payload: GetOrderAggregationOptions) {
+    switch (payload.groupBy) {
+      case 'type':
+        return prisma.$queryRaw<{ type: CarType; _count: number }[]>`
+          SELECT c.type, COUNT(o.id)::int as _count
+          FROM "Order" o
+          JOIN "Car" c ON o."carId" = c.id
+          WHERE o."userId" = ${userId}
+          GROUP BY c.type
+          ORDER BY _count DESC;
+        `;
+      case 'brand':
+        return prisma.$queryRaw<{ brand: string; _count: number }[]>`
+          SELECT c.brand, COUNT(o.id)::int as _count
+          FROM "Order" o
+          JOIN "Car" c ON o."carId" = c.id
+          WHERE o."userId" = ${userId}
+          GROUP BY c.brand
+          ORDER BY _count DESC;
+      `;
+    }
+  }
+
+  async addReview(userId: number, payload: AddReviewPayload): Promise<number> {
+    AddReviewValidationSchema.parse(payload);
+
+    const review = await prisma.review.create({
+      data: { userId, ...payload },
+      select: { id: true },
+    });
+
+    return review.id;
+  }
+
+  async getReviewList(userId: number, options: GetReviewListOptions = {}): Promise<PaginatedList<Review>> {
+    const { page = 1, limit = UserInteractor.PAGINATION_LIMIT, sortDir = UserInteractor.SORT_DIRECTION } = options;
+    const { reviews, _count } = await prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+      select: {
+        reviews: {
+          where: {
+            title: { equals: options.title },
+            carId: { equals: options.carId },
+          },
+          include: { user: { select: { name: true, lastname: true, avatar: true } } },
+          skip: UserInteractor.toOffsetPagination(page, limit),
+          take: limit,
+          orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
+        },
+        _count: {
+          select: { reviews: true },
+        },
+      },
+    });
+
+    return { items: reviews, page, limit, count: _count.reviews };
   }
 }

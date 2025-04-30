@@ -3,10 +3,13 @@ import type { RouteValidationError, SchemaValidationError } from '@/entities/err
 import type {
   AddFavoritePayload,
   AddOrderPayload,
+  AddReviewPayload,
   DelFavoritePayload,
   GetFavoriteListOptions,
   GetNotificationListOptions,
+  GetOrderAggregationOptions,
   GetOrderListOptions,
+  GetReviewListOptions,
 } from '@/interactors/user';
 import { UserInteractor } from '@/interactors/user';
 import {
@@ -91,8 +94,41 @@ export class UserController extends AbstractController {
     return new UserInteractor().addOrder(req.user.id, body);
   }
 
+  @Get('orders/current')
+  @Response(404, 'Not Found')
+  async getCurrentOrder(@Request() req: Express.AuthenticatedRequest) {
+    return new UserInteractor().getCurrentOrder(req.user.id);
+  }
+
+  @Get('orders/aggregation')
+  async getOrderAggregation(
+    @Request() req: Express.AuthenticatedRequest,
+    @Queries() options: GetOrderAggregationOptions
+  ) {
+    return new UserInteractor().getOrderAggregation(req.user.id, options);
+  }
+
   @Get('orders/{id}')
+  @Response(404, 'Not Found')
   async getOrder(@Path() id: number) {
     return new UserInteractor().getOrder(id);
+  }
+
+  @Get('reviews')
+  async getReviewList(@Request() req: Express.AuthenticatedRequest, @Queries() options: GetReviewListOptions) {
+    const { items, page, limit, count } = await new UserInteractor().getReviewList(req.user.id, options);
+
+    this.setPaginationHeaders(page, limit, count);
+
+    return items;
+  }
+
+  @Post('reviews')
+  @SuccessResponse('201', 'Created')
+  @Response<SchemaValidationError>(422, 'Invalid schema implementation')
+  async addReview(@Request() req: Express.AuthenticatedRequest, @Body() body: AddReviewPayload) {
+    this.setStatus(201);
+
+    return new UserInteractor().addReview(req.user.id, body);
   }
 }

@@ -107,21 +107,6 @@ release:
   script:
     - pnpm release
 
-deploy:preview:
-  stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  environment: staging
-  when: manual
-  script:
-    - |
-      curl $DEPLOY_PREVIEW_HOOK \
-        --request POST \
-        --header 'accept: application/json' \
-        --header "authorization: Bearer $DEPLOYER_API_KEY" \
-        --header 'content-type: application/json' \
-        --data '{ "imagePath": "'"$APP_IMAGE"':preview", "name": "preview" }'
-
 deploy:app:
   stage: deploy
   rules:
@@ -139,3 +124,18 @@ deploy:db:
   environment: production
   script:
     - pnpm prisma migrate deploy
+
+deploy:preview:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  environment: staging
+  when: manual
+  script:
+    - |
+      curl $DEPLOY_PREVIEW_HOOK \
+        --request POST \
+        --header 'accept: application/json' \
+        --header "authorization: Bearer $DEPLOYER_API_KEY" \
+        --header 'content-type: application/json' \
+        --data '{ "imagePath": "'"$APP_IMAGE"':preview" }'

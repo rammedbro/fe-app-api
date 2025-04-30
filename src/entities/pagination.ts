@@ -4,21 +4,19 @@
 export interface PaginationOptions {
   /**
    * The page number to retrieve.
-   * @default 1
    */
-  page: number;
+  page?: number;
   /**
    * The number of items per page.
-   * @default 25
    */
-  limit: number;
+  limit?: number;
 }
 
 /**
  * Represents a paginated list of items.
  * @template T The type of items in the list.
  */
-export interface PaginatedList<T> extends PaginationOptions {
+export interface PaginatedList<T> extends Required<PaginationOptions> {
   /** The array of items in the current page. */
   items: T[];
   /** The total number of items across all pages. */

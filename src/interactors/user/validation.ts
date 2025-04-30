@@ -50,3 +50,9 @@ export const AddOrderValidationSchema = z.object({
     }),
   ]),
 });
+
+export const AddReviewValidationSchema = z.object({
+  title: z.string().min(10),
+  content: z.string().min(100),
+  rating: z.number().min(1).max(5),
+});

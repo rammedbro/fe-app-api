@@ -18,9 +18,3 @@ export interface GetCarListFilter {
 }
 
 export interface GetCarListOptions extends PaginationOptions, GetCarListFilter, SortOptions {}
-
-export interface GetReviewListOptions extends PaginationOptions, SortOptions {}
-
-export type AddReviewPayload = {
-  [K in Exclude<keyof Review, 'id' | 'createdAt' | 'carId' | 'user'>]: Review[K];
-};

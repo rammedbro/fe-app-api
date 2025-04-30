@@ -1,9 +1,8 @@
 import type { Car } from '@/entities/car';
 import type { PaginatedList } from '@/entities/pagination';
-import type { Review } from '@/entities/review';
 import { AbstractInteractor } from '@/interactors/abstract';
 import { prisma } from '@/repositories/prisma/client';
-import type { AddReviewPayload, GetCarListOptions, GetCarReturn, GetReviewListOptions } from './model';
+import type { GetCarListOptions, GetCarReturn } from './model';
 
 export class CarInteractor extends AbstractInteractor {
   async getCar(id: number): Promise<GetCarReturn> {
@@ -11,7 +10,11 @@ export class CarInteractor extends AbstractInteractor {
       where: { id },
       include: {
         reviews: {
-          include: { user: true },
+          include: {
+            user: {
+              select: { id: true, name: true, lastname: true, avatar: true },
+            },
+          },
         },
         _count: {
           select: {
@@ -34,7 +37,7 @@ export class CarInteractor extends AbstractInteractor {
     };
     const { page = 1, limit = CarInteractor.PAGINATION_LIMIT, sortDir = CarInteractor.SORT_DIRECTION } = options;
     const items = await prisma.car.findMany({
-      skip: CarInteractor.toOffsetPagination({ page, limit }),
+      skip: CarInteractor.toOffsetPagination(page, limit),
       take: limit,
       where,
       orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
@@ -42,35 +45,6 @@ export class CarInteractor extends AbstractInteractor {
     const count = await prisma.car.count({ where });
 
     return { items, page, limit, count };
-  }
-
-  async getReviewList(id: number, options: Partial<GetReviewListOptions> = {}): Promise<PaginatedList<Review>> {
-    const { page = 1, limit = CarInteractor.PAGINATION_LIMIT, sortDir = CarInteractor.SORT_DIRECTION } = options;
-    const { reviews, _count } = await prisma.car.findUniqueOrThrow({
-      where: { id },
-      select: {
-        reviews: {
-          include: { user: { select: { name: true, lastname: true, avatar: true } } },
-          skip: CarInteractor.toOffsetPagination({ page, limit }),
-          take: limit,
-          orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
-        },
-        _count: {
-          select: { reviews: true },
-        },
-      },
-    });
-
-    return { items: reviews, page, limit, count: _count.reviews };
-  }
-
-  async addReview(id: number, payload: AddReviewPayload): Promise<number> {
-    const review = await prisma.review.create({
-      data: { carId: id, ...payload },
-      include: { user: { select: { name: true, lastname: true, avatar: true } } },
-    });
-
-    return review.id;
   }
 
   async addView(id: number, payload: number) {
