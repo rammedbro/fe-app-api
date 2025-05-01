@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import swaggerUi from 'swagger-ui-express';
 import { RegisterRoutes } from './routes';
 
-export const router: Plugin = (app) => {
+export const router: Plugin<{}> = (app) => {
   RegisterRoutes(app);
 
   app.use('/docs', swaggerUi.serve, async (req: Request, res: Response) => {

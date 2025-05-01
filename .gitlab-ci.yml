@@ -107,6 +107,25 @@ release:
   script:
     - pnpm release
 
+release:sentry:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  allow_failure: true
+  environment: production
+  extends:
+    - .node-modules-cache
+  needs:
+    - build:app
+  variables:
+    SENTRY_PROJECT: $CI_PROJECT_NAME
+  script:
+    - export VERSION=$CI_PROJECT_NAME:${CI_COMMIT_TAG:1}
+    - sentry-cli releases new $VERSION
+    - sentry-cli releases set-commits $VERSION --auto
+    - sentry-cli deploys new --release $VERSION -e $CI_ENVIRONMENT_NAME
+    - sentry-cli releases finalize $VERSION
+
 deploy:app:
   stage: deploy
   rules:
