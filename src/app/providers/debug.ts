@@ -11,6 +11,7 @@ function middleware(req: Request, res: Response, next: NextFunction) {
 
   logRequest(`[${req.method}] ${req.originalUrl}`);
   logRequest('Headers:', req.headers);
+  logRequest('Query:', req.query);
   logRequest('Body:', req.body);
 
   const send = res.send;

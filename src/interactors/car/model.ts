@@ -15,6 +15,7 @@ export interface GetCarListFilter {
   steering?: CarSteering[];
   gasoline?: number;
   price?: Decimal;
+  search?: string;
 }
 
 export interface GetCarListOptions extends PaginationOptions, GetCarListFilter, SortOptions {}

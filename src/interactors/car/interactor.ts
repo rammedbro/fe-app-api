@@ -28,12 +28,15 @@ export class CarInteractor extends AbstractInteractor {
   }
 
   async getCarList(options: Partial<GetCarListOptions> = {}): Promise<PaginatedList<Car>> {
+    const [brand, ...model] = options.search?.trim().split(' ') || [];
     const where = {
       type: { in: options.type },
       steering: { in: options.steering },
       capacity: { in: options.capacity },
       gasoline: { lte: options.gasoline },
       price: { lte: options.price },
+      brand: { contains: brand, mode: 'insensitive' as const },
+      model: { contains: model.join(' '), mode: 'insensitive' as const },
     };
     const { page = 1, limit = CarInteractor.PAGINATION_LIMIT, sortDir = CarInteractor.SORT_DIRECTION } = options;
     const items = await prisma.car.findMany({
