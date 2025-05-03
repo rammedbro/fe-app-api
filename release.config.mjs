@@ -3,14 +3,14 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
-  repositoryUrl: 'https://gitlab.com/imolater/fe-app-api.git',
   branches: ['master', 'next'],
   plugins: [
     '@semantic-release/commit-analyzer',
     ['semantic-release-jira-notes', { jiraHost: 'imolater.atlassian.net' }],
     '@semantic-release/changelog',
     '@semantic-release/npm',
-    '@semantic-release/gitlab',
+    ['@semantic-release/gitlab', { repositoryUrl: 'https://gitlab.com/imolater/fe-app-api.git' }],
+    ['@semantic-release/github', { repositoryUrl: 'https://github.com/rammedbro/fe-app-api.git' }],
     [
       '@semantic-release/git',
       {
