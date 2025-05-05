@@ -1,7 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/nodemon.json",
   "watch": ["src", "tsoa.json", "tsconfig.json"],
-  "ext": "ts",
+  "ext": "ts,json",
   "ignore": ["node_modules", "build", "src/app/providers/router/routes.ts"],
-  "exec": "pnpm dev"
+  "execMap": {
+    "src/controllers": "pnpm tsoa spec-and-routes",
+    "*": "pnpm dev"
+  }
 }

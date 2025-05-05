@@ -1,5 +1,6 @@
 node_modules
 build
+dist
 src/app/providers/router/routes.ts
 infra/nginx/certs
 

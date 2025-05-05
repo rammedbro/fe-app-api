@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "error-tracking",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=16"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts"
+  },
+  "dependencies": {
+    "@sentry/node": "^9.15.0"
+  }
+}

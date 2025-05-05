@@ -1,8 +1,6 @@
-import '@/app/init/sentry'; /* @important Need to be first */
 import { debug } from '@/app/providers/debug';
 import { passport } from '@/app/providers/passport';
 import { router } from '@/app/providers/router/plugin';
-import { sentry } from '@/app/providers/sentry/plugin';
 import { createApp } from '@/app/ui/app';
 import { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
 import { prisma } from '@/repositories/prisma/client';
@@ -76,7 +74,6 @@ const app = createApp()
     }),
   })
   .plugin(router, {})
-  .plugin(sentry, {})
   .use((err: unknown, _: Request, res: Response, next: () => void) => {
     if (err instanceof HttpError) {
       return res.status(err.status).send(err.message);

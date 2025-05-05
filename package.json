@@ -31,24 +31,26 @@
   "type": "commonjs",
   "main": "./build/index.js",
   "scripts": {
-    "postinstall": "pnpm build:prisma",
+    "postinstall": "run-p build:prisma build:routes build:spec",
     "prepare": "husky",
-    "dev": "pnpm tsoa spec-and-routes && dotenvx run -- tsx ./src/index.ts",
+    "dev": "dotenvx run -- tsx ./src/index.ts",
     "dev:watch": "nodemon",
-    "build": "run-s clean build:prisma build:routes build:spec build:app",
+    "build": "run-s clean build:prisma build:packages build:routes build:spec build:app",
     "build:app": "tsc && tsc-alias",
     "build:routes": "pnpm tsoa routes",
     "build:spec": "pnpm tsoa spec",
     "build:prisma": "prisma generate --generator client --generator json",
     "build:models": "prisma generate --generator models",
-    "start": "node ./build",
-    "clean": "rimraf ./build",
-    "tsoa": "tsx ./scripts/tsoa.ts",
+    "build:packages": "pnpm run -r build",
+    "start": "node ./build/index.js",
     "lint": "run-p lint:*",
     "lint:js": "eslint \"**/*.{js,mjs,ts}\"",
     "lint:types": "tsc --noEmit",
     "db:gui": "prisma studio",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "clean": "rimraf build",
+    "clean:modules": "rimraf -g ./**/node_modules",
+    "tsoa": "tsx ./scripts/tsoa.ts"
   },
   "prisma": {
     "seed": "tsx ./scripts/prisma.ts seed"
@@ -56,12 +58,12 @@
   "dependencies": {
     "@prisma/adapter-pg": "6.2.1",
     "@prisma/client": "6.2.1",
-    "@sentry/node": "^9.15.0",
     "argon2": "^0.41.1",
     "connect-redis": "^8.0.1",
     "cors": "^2.8.5",
     "debug": "^4.4.0",
     "decimal.js": "^10.5.0",
+    "error-tracking": "workspace:^",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "http-errors": "^2.0.0",
@@ -71,6 +73,7 @@
     "pg": "^8.13.3",
     "redis": "^4.7.0",
     "swagger-ui-express": "^5.0.1",
+    "telemetry": "workspace:^",
     "tsoa": "^6.6.0",
     "zod": "^3.24.2"
   },
@@ -113,6 +116,7 @@
     "semantic-release": "^22.0.12",
     "semantic-release-jira-notes": "^4.0.0",
     "tsc-alias": "^1.8.10",
+    "tsup": "^8.4.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.21.0"

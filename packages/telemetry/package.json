@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "telemetry",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=16"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.58.1",
+    "@opentelemetry/context-async-hooks": "^2.0.0",
+    "@opentelemetry/exporter-metrics-otlp-grpc": "^0.200.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.200.0",
+    "@opentelemetry/resources": "^2.0.0",
+    "@opentelemetry/sdk-metrics": "^2.0.0",
+    "@opentelemetry/sdk-trace-node": "^2.0.0",
+    "@opentelemetry/semantic-conventions": "^1.32.0",
+    "@prisma/instrumentation": "^6.6.0",
+    "@pyroscope/nodejs": "^0.4.5"
+  }
+}
