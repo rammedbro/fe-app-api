@@ -7,6 +7,8 @@ export type CarType = 'Hatchback' | 'Sedan' | 'SUV' | 'MUV' | 'Coupe' | 'Convert
 
 export type CarSteering = 'Manual' | 'Auto';
 
+export type NotificationType = 'UserCreated' | 'OrderCreated';
+
 export interface UserDBModel {
   id: number;
   createdAt: Date;
@@ -70,7 +72,8 @@ export interface FavoriteDBModel {
 export interface NotificationDBModel {
   id: number;
   createdAt: Date;
-  text: string;
+  type: NotificationType;
+  meta: JsonValue;
   isSeen: boolean;
   userId: number;
 }

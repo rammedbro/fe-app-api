@@ -5,6 +5,7 @@ import type { Order } from '@/entities/order';
 import type { PaginatedList } from '@/entities/pagination';
 import { Review } from '@/entities/review';
 import { AbstractInteractor } from '@/interactors/abstract';
+import { CarSocket } from '@/interactors/car/socket';
 import { prisma } from '@/repositories/prisma/client';
 import argon from 'argon2';
 import type {
@@ -20,6 +21,7 @@ import type {
   GetReviewListOptions,
   GetUserReturn,
 } from './model';
+import { UserSocket } from './socket';
 import { AddOrderValidationSchema, AddReviewValidationSchema, AddUserValidationSchema } from './validation';
 
 export class UserInteractor extends AbstractInteractor {
@@ -41,6 +43,12 @@ export class UserInteractor extends AbstractInteractor {
       select: { id: true },
     });
 
+    prisma.notification
+      .create({
+        data: { userId: user.id, type: 'UserCreated', meta: { name: payload.name } },
+      })
+      .then((notification) => new UserSocket(user.id).emit('addNotification', notification));
+
     return user.id;
   }
 
@@ -53,6 +61,7 @@ export class UserInteractor extends AbstractInteractor {
       },
       skip: UserInteractor.toOffsetPagination(page, limit),
       take: limit,
+      orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
     });
     const count = await prisma.favorite.count({
       where: { userId: id },
@@ -89,6 +98,7 @@ export class UserInteractor extends AbstractInteractor {
         notifications: {
           skip: UserInteractor.toOffsetPagination(page, limit),
           take: limit,
+          orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
         },
         _count: {
           select: { notifications: true },
@@ -108,6 +118,7 @@ export class UserInteractor extends AbstractInteractor {
           include: { car: true },
           skip: UserInteractor.toOffsetPagination(page, limit),
           take: limit,
+          orderBy: options.sortBy?.map((field) => ({ [field]: sortDir })),
         },
         _count: {
           select: {
@@ -127,6 +138,12 @@ export class UserInteractor extends AbstractInteractor {
       data: { userId, ...payload },
       select: { id: true },
     });
+
+    prisma.notification
+      .create({
+        data: { userId, type: 'OrderCreated', meta: { orderId: order.id } },
+      })
+      .then((notification) => new UserSocket(userId).emit('addNotification', notification));
 
     return order.id;
   }
@@ -182,8 +199,10 @@ export class UserInteractor extends AbstractInteractor {
 
     const review = await prisma.review.create({
       data: { userId, ...payload },
-      select: { id: true },
+      include: { user: { select: { name: true, lastname: true, avatar: true } } },
     });
+
+    new CarSocket(payload.carId).emit('addReview', review);
 
     return review.id;
   }

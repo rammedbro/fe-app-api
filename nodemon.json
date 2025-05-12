@@ -3,8 +3,5 @@
   "watch": ["src", "tsoa.json", "tsconfig.json"],
   "ext": "ts,json",
   "ignore": ["node_modules", "build", "src/app/providers/router/routes.ts"],
-  "execMap": {
-    "src/controllers": "pnpm tsoa spec-and-routes",
-    "*": "pnpm dev"
-  }
+  "exec": "pnpm dev"
 }

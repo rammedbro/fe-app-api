@@ -1,13 +1,10 @@
+import type { Express } from 'express';
 import express from 'express';
 
-export type Plugin<Options = undefined> = (app: App, options: Options) => unknown;
+export type Plugin<Options = undefined> = (app: Express, options: Options) => unknown;
 
-export interface App extends express.Express {
-  plugin<T>(plugin: Plugin<T>, options: T): App;
-}
-
-export function createApp(): App {
-  const app = express() as unknown as App;
+export function createApp(): Express {
+  const app = express() as Express;
 
   app.plugin = (plugin, options) => {
     plugin(app, options);

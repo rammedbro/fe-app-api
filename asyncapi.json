@@ -1,0 +1,191 @@
+{
+  "$schema": "https://www.asyncapi.com/schema-store/all.schema-store.json",
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "fe-app-api",
+    "version": "0.1.0",
+    "description": "The backend of the fe-app showcase project - car rental service"
+  },
+  "servers": {
+    "production": {
+      "host": "localhost:{port}",
+      "pathname": "{path}",
+      "description": "Express server websocket endpoint for the production environment.",
+      "protocol": "ws",
+      "variables": {
+        "port": {
+          "default": "10000"
+        },
+        "path": {
+          "default": "/socket"
+        }
+      }
+    }
+  },
+  "channels": {
+    "user": {
+      "address": "/user",
+      "title": "Users channel",
+      "description": "The channel is used to exchange messages about user events",
+      "messages": {
+        "signOut": {
+          "summary": "Event triggered after user signed out"
+        },
+        "addNotification": {
+          "summary": "Event triggered after user gets a notification",
+          "payload": {
+            "$ref": "#/components/schemas/Notification"
+          }
+        }
+      }
+    },
+    "car": {
+      "address": "/cars?{carId}",
+      "title": "Cars channel",
+      "description": "The channel is used to exchange messages about car events",
+      "parameters": {
+        "carId": {
+          "$ref": "#/components/parameters/userId"
+        }
+      },
+      "messages": {
+        "addReview": {
+          "summary": "Event triggered after cars gets a review",
+          "payload": {
+            "$ref": "#/components/schemas/Review"
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "emitAddNotification": {
+      "title": "Emit notification's 'addNotification' event",
+      "summary": "Triggering event after user gets a notification",
+      "channel": {
+        "$ref": "#/channels/user"
+      },
+      "action": "send",
+      "security": [
+        {
+          "$ref": "#/components/securitySchemes/cookie"
+        }
+      ]
+    },
+    "onAddNotification": {
+      "title": "Listen to notification's 'addNotification' event",
+      "summary": "Event triggered after user gets a notification",
+      "channel": {
+        "$ref": "#/channels/user"
+      },
+      "action": "receive",
+      "security": [
+        {
+          "$ref": "#/components/securitySchemes/cookie"
+        }
+      ]
+    },
+    "emitUserSignOut": {
+      "title": "Emit user's 'signOut' event",
+      "summary": "Triggering event after user signing out",
+      "channel": {
+        "$ref": "#/channels/user"
+      },
+      "action": "send",
+      "security": [
+        {
+          "$ref": "#/components/securitySchemes/cookie"
+        }
+      ]
+    },
+    "onUserSignOut": {
+      "title": "Listen to user's 'signOut' event",
+      "summary": "Event triggered after user signing out",
+      "channel": {
+        "$ref": "#/channels/user"
+      },
+      "action": "receive",
+      "security": [
+        {
+          "$ref": "#/components/securitySchemes/cookie"
+        }
+      ]
+    },
+    "emitAddReview": {
+      "title": "Emit car's 'addReview' event",
+      "summary": "Triggering event after car gets a review",
+      "channel": {
+        "$ref": "#/channels/car"
+      },
+      "action": "send"
+    },
+    "onAddReview": {
+      "title": "Listen to car's 'addReview' event",
+      "summary": "Event triggered after car gets a review",
+      "channel": {
+        "$ref": "#/channels/car"
+      },
+      "action": "receive"
+    }
+  },
+  "components": {
+    "schemas": {
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "object"
+          },
+          "isSeen": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object"
+          },
+          "carId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "carId": {
+        "description": "Id of a car"
+      }
+    },
+    "securitySchemes": {
+      "cookie": {
+        "type": "httpApiKey",
+        "name": "sid",
+        "in": "cookie",
+        "description": "A 'sid' key in 'Cookie' header of an authenticated user"
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ import {
 
 @Route('user')
 @Tags('user')
-@Security('auth')
+@Security('cookie')
 @Response<RouteValidationError>(400, 'Invalid request payload')
 @Response<string>(401, 'Unauthorized')
 @Response<string>(500, 'Internal server error')

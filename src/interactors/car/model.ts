@@ -19,3 +19,9 @@ export interface GetCarListFilter {
 }
 
 export interface GetCarListOptions extends PaginationOptions, GetCarListFilter, SortOptions {}
+
+export interface CarSocketListenEvents {}
+
+export interface CarSocketEmitEvents {
+  addReview: (payload: Review) => void;
+}

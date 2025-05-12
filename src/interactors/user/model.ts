@@ -47,3 +47,10 @@ export type AddReviewPayload = {
 export interface GetOrderAggregationOptions {
   groupBy: 'type' | 'brand';
 }
+
+export interface UserSocketListenEvents {}
+
+export interface UserSocketEmitEvents {
+  signOut: () => void;
+  addNotification: (payload: Notification) => void;
+}

@@ -119,11 +119,17 @@ model Favorite {
   @@id(name: "id", [userId, carId])
 }
 
+enum NotificationType {
+  UserCreated
+  OrderCreated
+}
+
 model Notification {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  text      String
-  isSeen    Boolean
+  id        Int              @id @default(autoincrement())
+  createdAt DateTime         @default(now())
+  type      NotificationType
+  meta      Json?            @db.JsonB /// [NotificationMeta]
+  isSeen    Boolean          @default(false)
   userId    Int
 
   user User @relation(fields: [userId], references: [id])

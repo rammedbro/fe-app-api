@@ -1,9 +1,8 @@
 import { AbstractController } from '@/controllers/abstract/controller';
 import type { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
 import type { Session } from '@/entities/session';
+import { AuthInteractor } from '@/interactors/auth';
 import { UserInteractor } from '@/interactors/user';
-import createHttpError from 'http-errors';
-import { promisify } from 'node:util';
 import passport from 'passport';
 import { Body, Get, Middlewares, Post, Request, Response, Route, Security, Tags } from 'tsoa';
 import type { SignInPayload, SignUpPayload } from './model';
@@ -33,8 +32,7 @@ export class AuthController extends AbstractController {
   @Middlewares(passport.authenticate('local'))
   @Response<RouteValidationError>(400, 'Invalid request payload')
   @Response<string>(401, 'Unauthorized')
-  async signIn(@Request() req: Express.Request, @Body() body: SignInPayload) {
-    if (!req.user) throw createHttpError(401, 'Unauthorized');
+  async signIn(@Request() req: Express.AuthenticatedRequest, @Body() body: SignInPayload) {
     if (!req.session.cookie.expires) throw new Error('Session cookie must have expiration date');
 
     const session: Session = {
@@ -47,14 +45,10 @@ export class AuthController extends AbstractController {
   }
 
   @Post('sign-out')
-  @Security('auth')
+  @Security('cookie')
   @Response<string>(401, 'Unauthorized')
   async signOut(@Request() req: Express.AuthenticatedRequest) {
-    const logout = promisify(req.logout);
-    const destroy = promisify(req.session.destroy.bind(req.session));
-
-    await logout();
-    await destroy();
+    await new AuthInteractor().signOut(req);
 
     return { session: null };
   }

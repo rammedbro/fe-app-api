@@ -20,7 +20,7 @@
       Kubernetes)
 - [ ] Load balancing & rate limiting to prevent server overload (e.g., nginx, express)
 - [x] Error handling & logging with structured logs and proper HTTP error codes
-- [ ] Add error tracking, alerts, health checks, metrics
+- [x] Add error tracking, alerts, health checks, metrics
 - [x] Making sessions stateless (e.g., Redis)
 
 ## Code Maintainability & Developer Experience

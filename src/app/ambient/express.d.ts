@@ -10,4 +10,10 @@ declare global {
   }
 }
 
+declare module 'express' {
+  interface Express {
+    plugin<T>(plugin: Plugin<T>, options: T): this;
+  }
+}
+
 export {};

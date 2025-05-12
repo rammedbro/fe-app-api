@@ -1,3 +1,6 @@
-import type { NotificationDBModel } from '@/repositories/prisma/models';
+import type { NotificationDBModel, NotificationType } from '@/repositories/prisma/models';
 
-export interface Notification extends NotificationDBModel {}
+export type { NotificationType };
+
+export type Notification = Omit<NotificationDBModel, 'meta'> &
+  ({ type: 'UserCreated'; meta: { name: string } } | { type: 'OrderCreated'; meta: { orderId: number } });

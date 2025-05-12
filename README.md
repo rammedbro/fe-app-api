@@ -7,7 +7,9 @@ provides a structured, scalable API with strong type safety and separation of co
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
 - [Code Structure](#code-structure)
-- [API Specification](#api-specification)
+- [Authentication](#authentication)
+- [REST API Specification](#rest-api-specification)
+- [Async API Specification](#async-api-specification)
 - [Deployment](#deployment)
 - [Running Locally](#running-locally)
 - [Roadmap](./docs/Roadmap.md)
@@ -27,16 +29,24 @@ demonstrating:
 - Scalable and maintainable architecture patterns
 - Optimized developer experience with modern tooling
 
+### Key Features
+
+- **User Authentication:** Register, login, session management
+- **Car Listings:** Create, update, delete, and fetch rental cars
+- **Booking System:** Users can book and manage reservations
+
 ## Tech Stack
 
 - **Runtime:** [Node.js](https://nodejs.org/)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Web Framework:** [Express.js](https://expressjs.com/)
-- **API Specification:** [OpenAPI](https://swagger.io/specification/)
+- **REST API Specification:** [OpenAPI](https://swagger.io/specification/)
+- **Async API Specification:** [AsyncAPI](https://www.asyncapi.com/docs/reference/specification/v3.0.0)
 - **Database ORM:** [Prisma](https://www.prisma.io/)
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
 - **Cache & Session Storage:** [Redis](https://redis.io/)
-- **Authentication:** [Passport.js](http://www.passportjs.org/) (Session-based)
+- **Authentication:** [Passport.js](https://www.passportjs.org/)
+- **Websocket Server:** [Socket.io](https://socket.io/)
 - **Containerization & Deployment:** [Docker](https://www.docker.com/), [Render](https://render.com/)
 
 ## Code Structure
@@ -50,7 +60,7 @@ separation of concerns, low coupling and high cohesion:
 📦 fe-app-api
  ┣ 📂 src
  ┃ ┃ # App layer
- ┃ ┣ 📂 app             # App's related code (e.g. router, middlewares)
+ ┃ ┣ 📂 app             # App's related code (e.g. routes, middlewares, plugins)
  ┃ ┃ # Presentation layer
  ┃ ┣ 📂 controllers     # Request's handlers
  ┃ ┃ # Domain layer
@@ -61,7 +71,9 @@ separation of concerns, low coupling and high cohesion:
  ┃ ┃ # Shared layer
  ┃ ┣ 📂 shared          # Reusable functionality detached from the specifics of the business
  ┃ ┃
- ┃ ┣ 📜 index.ts        # App setup and entry point
+ ┃ ┣ 📜 app.ts          # App setup
+ ┃ ┣ 📜 server.ts       # Server setup
+ ┃ ┣ 📜 index.ts        # Entry point
  ┣ 📜 package.json
  ┣ 📜 tsconfig.json
  ┣ 📜 schema.prisma    # Prisma schema
@@ -69,22 +81,19 @@ separation of concerns, low coupling and high cohesion:
  ┗ 📜 README.md
 ```
 
-## API Specification
-
-The backend uses [`tsoa`](https://tsoa-community.github.io/docs/) to define routes based on **OpenAPI** specifications. The API definitions are automatically generated and used for frontend integration.
-
-### Authentication
+## Authentication
 
 - **Session-based authentication** using [`express-session`](https://www.npmjs.com/package/express-session) & [`passport`](http://www.passportjs.org/)
 - Sessions are stored in **Redis** for persistence
 - Users authenticate via standard login mechanisms
 
-### Key Features
+## REST API Specification
 
-- **User Authentication:** Register, login, session management
-- **Car Listings:** Create, update, delete, and fetch rental cars
-- **Booking System:** Users can book and manage reservations
-- **Admin Features:** Admins can manage users & listings
+The backend uses [`tsoa`](https://tsoa-community.github.io/docs/) to define routes based on **OpenAPI** specifications. The API definitions are automatically generated and used for frontend integration. [`Read more...`](./docs/Openapi.md)
+
+## Async API Specification
+
+The backend supports a real-time, event-driven architecture built on **WebSocket**, designed to handle dynamic interactions such as live status updates, notifications, and two-way communication between the client and server. This complements the REST API by enabling reactive experiences across the app (e.g., reservation updates, user activity, etc.). [`Read more...`](./docs/Asyncapi.md)
 
 ## Deployment
 

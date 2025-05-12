@@ -8,17 +8,17 @@
     "routesDir": "./src/app/providers/router",
     "routesFileName": "routes.ts",
     "bodyCoercion": false,
-    "authenticationModule": "./src/app/providers/tsoa/auth.ts"
+    "authenticationModule": "./src/app/providers/auth.ts"
   },
   "spec": {
     "outputDirectory": "./build",
     "specVersion": 3,
-    "basePath": "/",
+    "basePath": "/api",
     "securityDefinitions": {
-      "auth": {
+      "cookie": {
         "type": "apiKey",
         "in": "header",
-        "name": "auth",
+        "name": "sid",
         "description": "A 'sid' key in Cookie header string of an authenticated user"
       }
     }
