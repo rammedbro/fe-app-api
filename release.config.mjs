@@ -9,7 +9,7 @@ export default {
     ['semantic-release-jira-notes', { jiraHost: 'imolater.atlassian.net' }],
     '@semantic-release/changelog',
     '@semantic-release/npm',
-    ['@semantic-release/gitlab', { repositoryUrl: 'https://gitlab.com/imolater/fe-app-api.git' }],
+    '@semantic-release/gitlab',
     [
       '@semantic-release/git',
       {
