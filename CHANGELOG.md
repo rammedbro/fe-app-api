@@ -1,3 +1,13 @@
+# [1.10.0](https://gitlab.com/imolater/fe-app-api/compare/v1.9.0...v1.10.0) (2025-05-13)
+
+
+### Features
+
+* **[FAA-10](https://imolater.atlassian.net/browse/FAA-10):** Add error tracking ([cb903b5](https://gitlab.com/imolater/fe-app-api/commit/cb903b5e6be747e14137c5965283b88365a8d759))
+* **[FAA-34](https://imolater.atlassian.net/browse/FAA-34):** Add telemetry collecting ([43ecd8c](https://gitlab.com/imolater/fe-app-api/commit/43ecd8ce36939d20df1264f0864e0ca7bb4e3122))
+* **[FAA-47](https://imolater.atlassian.net/browse/FAA-47):** Add search by text query on car table ([187d216](https://gitlab.com/imolater/fe-app-api/commit/187d21690c8d85f6320816336f9dd9bd3860d7fb))
+* **[FAA-58](https://imolater.atlassian.net/browse/FAA-58):** Add websocket server for EDA ([8dc9037](https://gitlab.com/imolater/fe-app-api/commit/8dc903777d1ce46a1e672b4f6fa200446c6932f5))
+
 # [1.9.0](https://gitlab.com/imolater/fe-app-api/compare/v1.8.0...v1.9.0) (2025-04-30)
 
 
