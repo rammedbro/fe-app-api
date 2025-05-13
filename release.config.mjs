@@ -10,7 +10,6 @@ export default {
     '@semantic-release/changelog',
     '@semantic-release/npm',
     ['@semantic-release/gitlab', { repositoryUrl: 'https://gitlab.com/imolater/fe-app-api.git' }],
-    ['@semantic-release/github', { repositoryUrl: 'https://github.com/rammedbro/fe-app-api.git' }],
     [
       '@semantic-release/git',
       {
