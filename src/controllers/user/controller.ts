@@ -1,10 +1,9 @@
 import { AbstractController } from '@/controllers/abstract/controller';
-import type { RouteValidationError, SchemaValidationError } from '@/entities/error';
+import type { RouteValidationError, SchemaValidationError, UniquenessConstraintError } from '@/entities/error';
 import type {
-  AddFavoritePayload,
   AddOrderPayload,
   AddReviewPayload,
-  DelFavoritePayload,
+  BulkFavoritePayload,
   GetFavoriteListOptions,
   GetNotificationListOptions,
   GetOrderAggregationOptions,
@@ -12,20 +11,7 @@ import type {
   GetReviewListOptions,
 } from '@/interactors/user';
 import { UserInteractor } from '@/interactors/user';
-import {
-  Body,
-  Delete,
-  Get,
-  Path,
-  Post,
-  Queries,
-  Request,
-  Response,
-  Route,
-  Security,
-  SuccessResponse,
-  Tags,
-} from 'tsoa';
+import { Body, Get, Path, Post, Queries, Request, Response, Route, Security, SuccessResponse, Tags } from 'tsoa';
 
 @Route('user')
 @Tags('user')
@@ -48,20 +34,13 @@ export class UserController extends AbstractController {
     return items;
   }
 
-  @Post('favorites')
-  @SuccessResponse('201', 'Created')
-  async addFavorite(@Request() req: Express.AuthenticatedRequest, @Body() body: AddFavoritePayload) {
-    this.setStatus(201);
-
-    return new UserInteractor().addFavorite(req.user.id, body);
-  }
-
-  @Delete('favorites')
-  @SuccessResponse('204', 'Deleted')
-  async delFavorite(@Request() req: Express.AuthenticatedRequest, @Body() body: DelFavoritePayload) {
+  @Post('favorites/bulk')
+  @SuccessResponse(204, 'No Content')
+  @Response<UniquenessConstraintError>(409, 'Uniqueness constraint violation')
+  async bulkFavorite(@Request() req: Express.AuthenticatedRequest, @Body() body: BulkFavoritePayload) {
     this.setStatus(204);
 
-    return new UserInteractor().delFavorite(req.user.id, body);
+    return new UserInteractor().bulkFavorite(req.user.id, body);
   }
 
   @Get('notifications')
@@ -86,7 +65,7 @@ export class UserController extends AbstractController {
   }
 
   @Post('orders')
-  @SuccessResponse('201', 'Created')
+  @SuccessResponse(201, 'Created')
   @Response<SchemaValidationError>(422, 'Invalid schema implementation')
   async addOrder(@Request() req: Express.AuthenticatedRequest, @Body() body: AddOrderPayload) {
     this.setStatus(201);
@@ -124,7 +103,7 @@ export class UserController extends AbstractController {
   }
 
   @Post('reviews')
-  @SuccessResponse('201', 'Created')
+  @SuccessResponse(201, 'Created')
   @Response<SchemaValidationError>(422, 'Invalid schema implementation')
   async addReview(@Request() req: Express.AuthenticatedRequest, @Body() body: AddReviewPayload) {
     this.setStatus(201);

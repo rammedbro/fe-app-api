@@ -1,4 +1,3 @@
-import type { Favorite } from '@/entities/favorite';
 import type { Notification } from '@/entities/notification';
 import type { Order } from '@/entities/order';
 import type { PaginationOptions } from '@/entities/pagination';
@@ -11,7 +10,6 @@ export type AddUserPayload = {
 };
 
 export interface GetUserReturn extends User {
-  favorites: Favorite[];
   notifications: Notification[];
 }
 
@@ -19,12 +17,9 @@ export interface GetNotificationListOptions extends PaginationOptions, SortOptio
 
 export interface GetFavoriteListOptions extends PaginationOptions, SortOptions {}
 
-export interface AddFavoritePayload {
-  carId: number;
-}
-
-export interface DelFavoritePayload {
-  carId: number;
+export interface BulkFavoritePayload {
+  add?: number[];
+  del?: number[];
 }
 
 export interface GetOrderListOptions extends PaginationOptions, SortOptions {}
