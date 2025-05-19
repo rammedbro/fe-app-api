@@ -1,3 +1,10 @@
+# [1.11.0](https://gitlab.com/imolater/fe-app-api/compare/v1.10.0...v1.11.0) (2025-05-19)
+
+
+### Features
+
+* **[FAA-61](https://imolater.atlassian.net/browse/FAA-61):** Replace notifications crud with bulk method ([90a6e67](https://gitlab.com/imolater/fe-app-api/commit/90a6e677623110c2aa7b23ff13c30e36f88efce6))
+
 # [1.10.0](https://gitlab.com/imolater/fe-app-api/compare/v1.9.0...v1.10.0) (2025-05-13)
 
 
